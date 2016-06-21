@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<meta charset="UTF-8"> 
+		<script>
+			var colors = ["Black","Blue","Brown","DarkBlue","Red","Gray","Gold","Yellow","Pink","Orange","Purple","White","Violet"];
+			colors = colors.sort();
+			var count = 0;
+			var finished = false;
+			var target;
+			var guess_input;
+
+			function do_game(){
+				var random_number = Math.random() * colors.length - 1;
+				var test = Math.floor(random_number) + 1;
+				target = colors[test];
+				console.log(target);
+				console.log(colors.indexOf("test"));
+				console.log(colors.indexOf("Black"));
+				while(!finished){
+					guess_input = prompt("I am thinking of one of these colors: \n\n" +
+						colors.toString() + "\n\n" +
+						"What color am I thinking of?");
+					if(guess_input == null){
+						return true;
+					}
+					count += 1;
+
+					finished = check_guess();
+				}
+			}
+
+			function check_guess(){
+				if(colors.indexOf(guess_input) < 0)
+				{
+					alert("I don’t recognize that color!");
+					return false;
+				}
+
+				if(guess_input > target){
+					alert("Your input is alphabetically higher than mine!");
+					return false;
+				}
+
+				if(guess_input < target){
+					alert("Your input is alphabetically lower than mine!");
+					return false;
+				}
+
+				myBody=document.getElementsByTagName("body")[0];
+
+				myBody.style.background=target;
+
+				alert("You are right! You took " + count + " guesses!");
+				return true;
+			}
+		</script>
+	</head>
+	<body onload="do_game()">
+	</body>
+</html>

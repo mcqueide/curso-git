@@ -6,3 +6,13 @@ cousera-angular/conFusion_gulp/app/fonts/.DS_Store
 cousera-angular/conFusion_gulp/app/images/.DS_Store
 cousera-angular/conFusion_gulp/app/scripts/.DS_Store
 cousera-angular/conFusion_gulp/app/styles/.DS_Store
+cousera-angular/conFusion_grunt/.tmp
+cousera-angular/conFusion_grunt/bower_components
+cousera-angular/conFusion_grunt/dist
+cousera-angular/conFusion_grunt/node_modules
+cousera-angular/conFusion_grunt/app/.DS_Store
+cousera-angular/conFusion_grunt/app/fonts/.DS_Store
+cousera-angular/conFusion_grunt/app/images/.DS_Store
+cousera-angular/conFusion_grunt/app/scripts/.DS_Store
+cousera-angular/conFusion_grunt/app/scripts/app.js
+cousera-angular/conFusion_grunt/app/styles/.DS_Store

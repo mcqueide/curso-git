@@ -1,3 +1,8 @@
 cousera-angular/conFusion_gulp/bower_components/
 cousera-angular/conFusion_gulp/dist/
 cousera-angular/conFusion_gulp/node_modules/
+cousera-angular/conFusion_gulp/app/.DS_Store
+cousera-angular/conFusion_gulp/app/fonts/.DS_Store
+cousera-angular/conFusion_gulp/app/images/.DS_Store
+cousera-angular/conFusion_gulp/app/scripts/.DS_Store
+cousera-angular/conFusion_gulp/app/styles/.DS_Store

@@ -6,7 +6,19 @@
                 <h3 align=center>Our Lipsmacking Culinary Creations</h3>
             </div>
             <div class="col-xs-12 col-sm-9 col-sm-pull-3">
-				<h4>Implement the Featured Dish Here</h4>
+				<div class="media">
+                    <div class="media-left media-middle">
+                        <a ng-ref="">
+                            <img class="media-object img-thumbnail" ng-src={{}} alt="{{}}" />
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">{{}} <span class="label label-danger">{{}}</span> <span class="badge">{{}}</span> </h2>
+                        <p>
+                            {{}}
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 

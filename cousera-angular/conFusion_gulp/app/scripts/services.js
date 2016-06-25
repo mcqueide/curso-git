@@ -186,23 +186,19 @@ angular.module('confusionApp')
 
             ];
 
-                this.getDishes = function(){
+            this.getDishes = function(){
+                return dishes;
+            };
 
-                    return dishes;
+            this.getDish = function (index) {
+                return dishes[index];
+            };
 
-                };
-
-                this.getDish = function (index) {
-
-                    return dishes[index];
-                };
-
-                // implement a function named getPromotion
-                // that returns a selected promotion.
-                this.getPromotion = function(index){
-                    return promotions[index];
-                }
-
+            // implement a function named getPromotion
+            // that returns a selected promotion.
+            this.getPromotion = function(index){
+                return promotions[index];
+            }
 
         })
 
@@ -248,7 +244,7 @@ angular.module('confusionApp')
                 return leadership;
             };
             corpfac.getLeader = function(index){
-                return leadership[indext];
+                return leadership[index];
             };
 
             // Remember this is a factory not a service

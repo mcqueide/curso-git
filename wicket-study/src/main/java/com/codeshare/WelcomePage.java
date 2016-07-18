@@ -3,6 +3,8 @@ package com.codeshare;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -25,30 +27,33 @@ public class WelcomePage extends WebPage {
 		
 		Form<?> form = new Form("form");
 		
-		TextField<String> text = new TextField<String>("text",
+		final TextField<String> text = new TextField<String>("text",
 			new PropertyModel<String>(userModel, "nome"));
+		text.setOutputMarkupId(true);
 		
-		DropDownChoice<String> gender = 
+		final DropDownChoice<String> gender = 
 			new DropDownChoice<String>("gender", 
 				new PropertyModel<String>(userModel, "gender"), 
 				genderChoices);
+		gender.setOutputMarkupId(true);
 		
-		Button button = new Button("submit"){
+		AjaxButton ajaxButton = new AjaxButton("submit") {
 			@Override
-			public void onSubmit() {
-				super.onSubmit();
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				super.onSubmit(target, form);
 				
-				String mensagem = String.format("Name: %s, \n Gender: %s", 
-					userModel.getNome(), userModel.getGender());
+				text.setEnabled(false);
+				gender.setEnabled(false);
 				
-				System.out.println(mensagem);
+				target.add(text);
+				target.add(gender);
 			}
 		};
 		
 		add(form);
 		form.add(text);
 		form.add(gender);
-		form.add(button);
+		form.add(ajaxButton);
 	}
 
 }

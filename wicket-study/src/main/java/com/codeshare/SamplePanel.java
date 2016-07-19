@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -30,28 +29,25 @@ public class SamplePanel extends Panel {
 
 		final TextField<String> text = new TextField<String>("text", new PropertyModel<String>(userModel, "nome"));
 		text.setOutputMarkupId(true);
-
-		final DropDownChoice<String> gender = new DropDownChoice<String>("gender",
-				new PropertyModel<String>(userModel, "gender"), genderChoices);
-		gender.setOutputMarkupId(true);
+		text.setOutputMarkupPlaceholderTag(true);
+		form.add(text);
 
 		AjaxButton ajaxButton = new AjaxButton("submit") {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				super.onSubmit(target, form);
 
-				text.setEnabled(false);
-				gender.setEnabled(false);
-
+				if(text.isVisible()){
+					text.setVisible(false);
+				}else{
+					text.setVisible(true);
+				}
 				target.add(text);
-				target.add(gender);
 			}
 		};
+		form.add(ajaxButton);
 
 		add(form);
-		form.add(text);
-		form.add(gender);
-		form.add(ajaxButton);
 	}
 
 }

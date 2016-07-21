@@ -13,6 +13,7 @@ public class ModalWindowExample extends WebPage {
 	private static final long serialVersionUID = 122510756872880940L;
 
 	private ModalWindow modalWindow;
+	private String action;
 	public ModalWindowExample() {
 		modalWindow = new ModalWindow("modalWindow");
 		
@@ -21,7 +22,7 @@ public class ModalWindowExample extends WebPage {
 			private static final long serialVersionUID = 8422478388064273881L;
 
 			public Page createPage() {
-				return new WelcomePage();
+				return new WelcomePage(action);
 			}
 
 		});
@@ -43,7 +44,20 @@ public class ModalWindowExample extends WebPage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
+				action= "view";
+				modalWindow.show(target);
 				
+			}
+			
+		});
+		
+		add(new AjaxLink<String>("editLink"){
+
+			private static final long serialVersionUID = -288411372815781360L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				action= "edit";
 				modalWindow.show(target);
 				
 			}

@@ -7,6 +7,16 @@
 		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
 	</head>
 	<body>
-	   <div wicket:id="panel"></div>
+	   <form wicket:id="form">
+	       <div wicket:id="container"></div>
+	   </form>
+	   
+	   <wicket:fragment wicket:id="viewFragment">
+	       <span wicket:id="label"></span>
+	   </wicket:fragment>
+	   
+	   <wicket:fragment wicket:id="editFragment">
+           <input type="text" wicket:id="textField"></input>
+       </wicket:fragment>
 	</body>
 </html>

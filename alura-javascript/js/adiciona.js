@@ -13,7 +13,7 @@ $botaoAdicionar.addEventListener('click',function(event) {
                          "<td class='info-nome'>"+campoNome.value+"</td>"+
                          "<td class='info-peso'>"+campoPeso.value+"</td>"+
                          "<td class='info-altura'>"+campoAltura.value+"</td>"+
-                         "<td class='info-imc'></td>"+
+                         "<td class='info-imc'>"+campoPeso.value/(campoAltura.value*campoAltura.value)+"</td>"+
                       "</tr>";
 
   var todosPacientes = document.querySelector("table");

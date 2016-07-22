@@ -1,4 +1,8 @@
 var $trPacientes = document.getElementsByClassName("paciente"); //Array de trs
+var $botao = document.getElementById("calcula-imcs");
+$botao.addEventListener("click",function(){
+	percorreArray($trPacientes,modificaColunaImc);
+});
 
 function montaPaciente($pacienteTr){
 	var $tdNome = $pacienteTr.getElementsByClassName("info-nome")[0];
@@ -34,5 +38,3 @@ var modificaColunaImc = function ($pacienteTr){
 
 	paciente.pegaImc();
 }
-
-percorreArray($trPacientes,modificaColunaImc);

@@ -7,34 +7,24 @@
   position: relative;
 }
 
-[data-color="first"] {
-  background-color: #45AAEE; /* Azul */
-}
-[data-color="second"] {
-  background-color: #FF1010; /* Vermelho */
-}
-[data-color="third"]{
-  background-color: #76EF40; /* Verde */
-}
-[data-color="forth"] {
-  background-color: #EBEF40; /* Amarelo */
-}
-
-.wrap-card-options{
+.wrap-card-option{
   position: absolute;
   top: -18px;
   left: 0;
+  opacity: 0;
+  transition: opacity 0.2s linear;
 }
 
-.card_delete{
-  background-image: url(../../img/delete.svg);
-  background-size: 70%;
-  background-repeat: no-repeat;
-  background-position: center center;
-  color: #FFF;
+.card:hover .wrap-card-option{
+  opacity: 1;
+  transition: opacity 0.2s linear;
 }
 
 .card-options{
+  background-color: #FFF;
+  background-repeat: no-repeat;
+  background-position: center;
+
   box-sizing: border-box;
   height: 32px;
   width: 32px;
@@ -47,4 +37,32 @@
 }
 .card-options.isActive{
   border-width: 4px;
+}
+
+.card_delete{
+  background-image: url(../../img/delete.svg);
+  background-size: 70%;
+  margin-right: 15px;
+}
+
+.card_edit{
+  background-image: url(../../img/edit.svg);
+  background-size: 65%;
+}
+
+.card-content[contenteditable="true"]{
+  outline: 2px dotted rgba(0,0,0,0.5);
+}
+
+[data-color="first"] {
+  background-color: #45AAEE; /* Azul */
+}
+[data-color="second"] {
+  background-color: #FF1010; /* Vermelho */
+}
+[data-color="third"]{
+  background-color: #76EF40; /* Verde */
+}
+[data-color="forth"] {
+  background-color: #EBEF40; /* Amarelo */
 }

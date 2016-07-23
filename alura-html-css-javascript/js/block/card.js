@@ -16,7 +16,19 @@ for (var index = 0; index < $cards.length; index++) {
       $this.classList.add('isActive');
     }
     if ($this.classList.contains('card_delete')) {
-      $card.remove;
+      $card.remove();
+    }
+    if ($this.classList.contains('card_edit')) {
+      var $cardContent = $card.querySelector('.card-content');
+      if($cardContent.getAttribute('contenteditable') == 'false'){
+        $cardContent.setAttribute('contenteditable','true');
+        $cardContent.focus();
+        $this.classList.add('isActive');
+      }else{
+        $cardContent.setAttribute('contenteditable', 'false');
+        $cardContent.blur();
+        $this.classList.remove('isActive');
+      }
     }
   });
 };

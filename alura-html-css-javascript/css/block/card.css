@@ -4,6 +4,7 @@
   box-sizing: border-box;
   padding: 16px;
   width: 25%;
+  position: relative;
 }
 .card_colorFirst{
   background-color: #45AAEE;
@@ -19,4 +20,33 @@
 
 .colorForth{
   background-color: #EBEF40;
+}
+
+.wrap-card-colors{
+  position: absolute;
+  top: -18px;
+}
+
+.card-colors{
+  height: 32px;
+  width: 32px;
+  text-indent: -9999px;
+  /**se o texto passar o tamanho do elemento não deve aparecer na tela**/
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.5);
+  display: inline-block;
+}
+
+.card-colors_colorFirst{
+  background-color: #45AAEE;
+}
+.card-colors_colorSecond{
+  background-color: #FF1010;
+}
+.card-colors_colorThird {
+  background-color: #76EF40;
+}
+.card-colors_colorFourth{
+ background-color: #EBEF40;
 }

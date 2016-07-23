@@ -6,28 +6,28 @@
   width: 25%;
   position: relative;
 }
-.card_colorFirst{
-  background-color: #45AAEE;
-}
 
-.card_colorSecond{
-  background-color: #FF1010;
+[data-color="first"] {
+  background-color: #45AAEE; /* Azul */
 }
-
-.card_colorThird {
-  background-color: #76EF40;
+[data-color="second"] {
+  background-color: #FF1010; /* Vermelho */
 }
-
-.colorForth{
-  background-color: #EBEF40;
+[data-color="third"]{
+  background-color: #76EF40; /* Verde */
+}
+[data-color="forth"] {
+  background-color: #EBEF40; /* Amarelo */
 }
 
 .wrap-card-colors{
   position: absolute;
   top: -18px;
+  left: 0;
 }
 
-.card-colors{
+.card-options{
+  box-sizing: border-box;
   height: 32px;
   width: 32px;
   text-indent: -9999px;
@@ -37,16 +37,6 @@
   border: 2px solid rgba(0,0,0,0.5);
   display: inline-block;
 }
-
-.card-colors_colorFirst{
-  background-color: #45AAEE;
-}
-.card-colors_colorSecond{
-  background-color: #FF1010;
-}
-.card-colors_colorThird {
-  background-color: #76EF40;
-}
-.card-colors_colorFourth{
- background-color: #EBEF40;
+.card-options.isActive{
+  border-width: 4px;
 }

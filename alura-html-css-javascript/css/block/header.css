@@ -1,8 +1,8 @@
 .header{
   background-color: #0082C7;
   height: 40px;
-  padding: 8px 0px;
-  margin-bottom: 40px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .header-title{

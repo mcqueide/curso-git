@@ -1,6 +1,6 @@
 *{
   margin: 0;
-  border: 0;
+  border: none;
   padding: 0;
   outline: none;
 }
@@ -16,4 +16,8 @@ a{
 
 ul, ol, li{
   list-style: none;
+}
+
+textarea{
+  font-family: inherit;
 }

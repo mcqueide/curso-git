@@ -6,7 +6,7 @@ for (var index = 0; index < $cards.length; index++) {
     var $card = this;
     var $cardColors = $card.querySelectorAll('.card-options');
 
-    if ($this.classList.contains('card-options')) {
+    if ($this.dataset.color) {
       $card.dataset.color = $this.dataset.color;
 
       for (var position = 0; position < $cardColors.length; position++) {
@@ -14,6 +14,9 @@ for (var index = 0; index < $cards.length; index++) {
       };
 
       $this.classList.add('isActive');
-    };
+    }
+    if ($this.classList.contains('card_delete')) {
+      $card.remove;
+    }
   });
 };

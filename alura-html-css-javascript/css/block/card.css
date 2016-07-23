@@ -20,10 +20,18 @@
   background-color: #EBEF40; /* Amarelo */
 }
 
-.wrap-card-colors{
+.wrap-card-options{
   position: absolute;
   top: -18px;
   left: 0;
+}
+
+.card_delete{
+  background-image: url(../../img/delete.svg);
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color: #FFF;
 }
 
 .card-options{

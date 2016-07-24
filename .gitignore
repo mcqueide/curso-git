@@ -20,6 +20,8 @@ coursera-bootstrap/bower_components/
 cousera-angular/conFusion_gulp/json-server/public/
 cousera-angular/conFusion_gulp/.idea/
 cousera-angular/conFusion_gulp/json-server/db.json
+alura-gulp/node_modules/
+alura-gulp/dist/
 **/*.classpath
 **/*.project
 **/*.settings/

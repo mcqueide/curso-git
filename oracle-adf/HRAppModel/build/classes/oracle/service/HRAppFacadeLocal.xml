@@ -1,0 +1,33 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<JavaBean version="11.1.1.6.2" id="HRAppFacadeLocal" Package="oracle.service" BeanClass="oracle.service.HRAppFacadeLocal" isJavaBased="true" xmlns="http://xmlns.oracle.com/adfm/beanmodel">
+   <AccessorAttribute id="departmentFindAll" IsCollection="true" BeanClass="model.Department" CollectionBeanClass="UpdateableCollection"/>
+   <AccessorAttribute id="employeeFindAll" IsCollection="true" BeanClass="model.Employee" CollectionBeanClass="UpdateableCollection"/>
+   <AccessorAttribute id="locationFindAll" IsCollection="true" BeanClass="model.Location" CollectionBeanClass="UpdateableCollection"/>
+   <MethodAccessor IsCollection="false" Type="model.Department" BeanClass="model.Department" id="persistDepartment" ReturnNodeName="Department">
+      <ParameterInfo id="department" Type="model.Department" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Department" BeanClass="model.Department" id="mergeDepartment" ReturnNodeName="Department">
+      <ParameterInfo id="department" Type="model.Department" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="void" id="removeDepartment" ReturnNodeName="Return">
+      <ParameterInfo id="department" Type="model.Department" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Employee" BeanClass="model.Employee" id="persistEmployee" ReturnNodeName="Employee">
+      <ParameterInfo id="employee" Type="model.Employee" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Employee" BeanClass="model.Employee" id="mergeEmployee" ReturnNodeName="Employee">
+      <ParameterInfo id="employee" Type="model.Employee" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="void" id="removeEmployee" ReturnNodeName="Return">
+      <ParameterInfo id="employee" Type="model.Employee" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Location" BeanClass="model.Location" id="persistLocation" ReturnNodeName="Location">
+      <ParameterInfo id="location" Type="model.Location" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Location" BeanClass="model.Location" id="mergeLocation" ReturnNodeName="Location">
+      <ParameterInfo id="location" Type="model.Location" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="void" id="removeLocation" ReturnNodeName="Return">
+      <ParameterInfo id="location" Type="model.Location" isStructured="true"/>
+   </MethodAccessor>
+</JavaBean>

@@ -1,0 +1,94 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<pageDefinition version="11.1.1.6.2" id="MainHRPageDef" Package="view.pageDefs" xmlns="http://xmlns.oracle.com/adfm/uimodel">
+   <parameters/>
+   <executables>
+      <iterator Binds="root" RangeSize="25" DataControl="HRAppFacadeLocal" id="HRAppFacadeLocalIterator" ChangeEventPolicy="ppr"/>
+      <accessorIterator MasterBinding="HRAppFacadeLocalIterator" Binds="departmentFindAll" RangeSize="25" DataControl="HRAppFacadeLocal" BeanClass="model.Department" id="departmentFindAllIterator" ChangeEventPolicy="ppr"/>
+      <accessorIterator MasterBinding="departmentFindAllIterator" Binds="employees" RangeSize="-1" DataControl="HRAppFacadeLocal" BeanClass="model.Employee" id="employeesIterator" ChangeEventPolicy="ppr"/>
+      <searchRegion Binds="employeesIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="employees1Query"/>
+   </executables>
+   <bindings>
+      <attributeValues IterBinding="departmentFindAllIterator" id="departmentId">
+         <AttrNames>
+            <Item Value="departmentId"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="departmentFindAllIterator" id="departmentName">
+         <AttrNames>
+            <Item Value="departmentName"/>
+         </AttrNames>
+      </attributeValues>
+      <action IterBinding="departmentFindAllIterator" id="First" RequiresUpdateModel="true" Action="first"/>
+      <action IterBinding="departmentFindAllIterator" id="Previous" RequiresUpdateModel="true" Action="previous"/>
+      <action IterBinding="departmentFindAllIterator" id="Next" RequiresUpdateModel="true" Action="next"/>
+      <action IterBinding="departmentFindAllIterator" id="Last" RequiresUpdateModel="true" Action="last"/>
+      <graph IterBinding="employeesIterator" id="employees" xmlns="http://xmlns.oracle.com/adfm/dvt" type="BAR_VERT_CLUST">
+         <graphDataMap leafOnly="true">
+            <groups>
+               <data>
+                  <item value="salary"/>
+               </data>
+            </groups>
+            <series>
+               <item value="firstName"/>
+            </series>
+         </graphDataMap>
+      </graph>
+      <tree IterBinding="employeesIterator" id="employees1">
+         <nodeDefinition DefName="model.Employee" Name="employees10">
+            <AttrNames>
+               <Item Value="employeeId"/>
+               <Item Value="firstName"/>
+               <Item Value="lastName"/>
+               <Item Value="hireDate"/>
+               <Item Value="salary"/>
+            </AttrNames>
+         </nodeDefinition>
+      </tree>
+      <attributeValues IterBinding="employeesIterator" id="employeeId">
+         <AttrNames>
+            <Item Value="employeeId"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="employeesIterator" id="firstName">
+         <AttrNames>
+            <Item Value="firstName"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="employeesIterator" id="lastName">
+         <AttrNames>
+            <Item Value="lastName"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="employeesIterator" id="email">
+         <AttrNames>
+            <Item Value="email"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="employeesIterator" id="hireDate">
+         <AttrNames>
+            <Item Value="hireDate"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="employeesIterator" id="phoneNumber">
+         <AttrNames>
+            <Item Value="phoneNumber"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="employeesIterator" id="commissionPct">
+         <AttrNames>
+            <Item Value="commissionPct"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="employeesIterator" id="salary">
+         <AttrNames>
+            <Item Value="salary"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="employeesIterator" id="jobId">
+         <AttrNames>
+            <Item Value="jobId"/>
+         </AttrNames>
+      </attributeValues>
+   </bindings>
+</pageDefinition>

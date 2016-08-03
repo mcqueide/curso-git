@@ -1,0 +1,29 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<JavaBean version="11.1.1.6.2" id="Employee" Package="model" BeanClass="model.Employee" isJavaBased="true" xmlns="http://xmlns.oracle.com/adfm/beanmodel">
+   <Attribute Name="employeeId" PrimaryKey="true" Type="long"/>
+   <Attribute Name="commissionPct" Type="java.math.BigDecimal"/>
+   <Attribute Name="email" Type="java.lang.String"/>
+   <Attribute Name="firstName" Type="java.lang.String"/>
+   <Attribute Name="hireDate" Type="java.util.Date"/>
+   <Attribute Name="jobId" Type="java.lang.String"/>
+   <Attribute Name="lastName" Type="java.lang.String"/>
+   <Attribute Name="phoneNumber" Type="java.lang.String"/>
+   <Attribute Name="salary" Type="java.math.BigDecimal"/>
+   <AccessorAttribute id="departments" IsCollection="true" BeanClass="model.Department" CollectionBeanClass="UpdateableCollection"/>
+   <AccessorAttribute id="department" IsCollection="false" BeanClass="model.Department" CollectionBeanClass="UpdateableSingleValue"/>
+   <AccessorAttribute id="employee" IsCollection="false" BeanClass="model.Employee" CollectionBeanClass="UpdateableSingleValue"/>
+   <AccessorAttribute id="employees" IsCollection="true" BeanClass="model.Employee" CollectionBeanClass="UpdateableCollection"/>
+   <MethodAccessor IsCollection="false" Type="model.Department" BeanClass="model.Department" id="addDepartment" ReturnNodeName="Department">
+      <ParameterInfo id="department" Type="model.Department" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Department" BeanClass="model.Department" id="removeDepartment" ReturnNodeName="Department">
+      <ParameterInfo id="department" Type="model.Department" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Employee" BeanClass="model.Employee" id="addEmployee" ReturnNodeName="Employee">
+      <ParameterInfo id="employee" Type="model.Employee" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Employee" BeanClass="model.Employee" id="removeEmployee" ReturnNodeName="Employee">
+      <ParameterInfo id="employee" Type="model.Employee" isStructured="true"/>
+   </MethodAccessor>
+   <ConstructorMethod IsCollection="true" Type="model.Employee" BeanClass="model.Employee" id="Employee"/>
+</JavaBean>

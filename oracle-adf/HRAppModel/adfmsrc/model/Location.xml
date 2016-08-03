@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<JavaBean version="11.1.1.6.2" id="Location" Package="model" BeanClass="model.Location" isJavaBased="true" xmlns="http://xmlns.oracle.com/adfm/beanmodel">
+   <Attribute Name="locationId" PrimaryKey="true" Type="long"/>
+   <Attribute Name="city" Type="java.lang.String"/>
+   <Attribute Name="countryId" Type="java.lang.String"/>
+   <Attribute Name="postalCode" Type="java.lang.String"/>
+   <Attribute Name="stateProvince" Type="java.lang.String"/>
+   <Attribute Name="streetAddress" Type="java.lang.String"/>
+   <AccessorAttribute id="departments" IsCollection="true" BeanClass="model.Department" CollectionBeanClass="UpdateableCollection"/>
+   <MethodAccessor IsCollection="false" Type="model.Department" BeanClass="model.Department" id="addDepartment" ReturnNodeName="Department">
+      <ParameterInfo id="department" Type="model.Department" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Department" BeanClass="model.Department" id="removeDepartment" ReturnNodeName="Department">
+      <ParameterInfo id="department" Type="model.Department" isStructured="true"/>
+   </MethodAccessor>
+   <ConstructorMethod IsCollection="true" Type="model.Location" BeanClass="model.Location" id="Location"/>
+</JavaBean>

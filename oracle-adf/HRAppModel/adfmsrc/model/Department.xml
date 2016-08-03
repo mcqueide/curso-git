@@ -1,0 +1,15 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<JavaBean version="11.1.1.6.2" id="Department" Package="model" BeanClass="model.Department" isJavaBased="true" xmlns="http://xmlns.oracle.com/adfm/beanmodel">
+   <Attribute Name="departmentId" PrimaryKey="true" Type="long"/>
+   <Attribute Name="departmentName" Type="java.lang.String"/>
+   <AccessorAttribute id="location" IsCollection="false" BeanClass="model.Location" CollectionBeanClass="UpdateableSingleValue"/>
+   <AccessorAttribute id="employee" IsCollection="false" BeanClass="model.Employee" CollectionBeanClass="UpdateableSingleValue"/>
+   <AccessorAttribute id="employees" IsCollection="true" BeanClass="model.Employee" CollectionBeanClass="UpdateableCollection"/>
+   <MethodAccessor IsCollection="false" Type="model.Employee" BeanClass="model.Employee" id="addEmployee" ReturnNodeName="Employee">
+      <ParameterInfo id="employee" Type="model.Employee" isStructured="true"/>
+   </MethodAccessor>
+   <MethodAccessor IsCollection="false" Type="model.Employee" BeanClass="model.Employee" id="removeEmployee" ReturnNodeName="Employee">
+      <ParameterInfo id="employee" Type="model.Employee" isStructured="true"/>
+   </MethodAccessor>
+   <ConstructorMethod IsCollection="true" Type="model.Department" BeanClass="model.Department" id="Department"/>
+</JavaBean>

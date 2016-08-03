@@ -1,0 +1,15 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Application version="11.1.1.6.2" ClientType="Generic" id="DataBindings" Package="view" SeparateXMLFiles="false" xmlns="http://xmlns.oracle.com/adfm/application">
+   <definitionFactories>
+      <factory className="oracle.adfinternal.view.faces.dvt.model.binding.FacesBindingFactory" nameSpace="http://xmlns.oracle.com/adfm/dvt"/>
+   </definitionFactories>
+   <pageMap>
+      <page path="/MainHR.jspx" usageId="view_"/>
+   </pageMap>
+   <pageDefinitionUsages>
+      <page id="view_" path="view.pageDefs.MainHRPageDef"/>
+   </pageDefinitionUsages>
+   <dataControlUsages>
+      <dc id="HRAppFacadeLocal" path="model.HRAppFacadeLocal"/>
+   </dataControlUsages>
+</Application>

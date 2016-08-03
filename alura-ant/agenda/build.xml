@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="agenda" default="rodar-teste">
+
+	<property file="build.properties"/>
+	
+	<target name="limpar">
+		<delete dir="${build.dir}" />
+		<mkdir  dir="${build.dir}" />
+		<mkdir  dir="${build.dir}/${classes.dir}" />
+		<mkdir  dir="${build.dir}/${classes.teste.dir}" />
+	</target>
+
+	<path id="classpath-compilacao">
+		<fileset dir="WebContent/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<path id="classpath-compilacao-teste">
+		<path refid="classpath-compilacao"/>
+		<pathelement path="${build.dir}/${classes.dir}"/>
+		
+		<fileset dir="lib-teste">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<target name="copiar-recursos" depends="limpar">
+		<copy todir="${build.dir}/${classes.dir}">
+			<fileset dir="src">
+				<include name="*.xml"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="compilar" depends="copiar-recursos">
+		<javac destdir="${build.dir}/${classes.dir}" srcdir="src">
+			<classpath refid="classpath-compilacao"/>
+		</javac>
+	</target>
+	
+	<target name="compilar-teste" depends="compilar">
+		<javac destdir="${build.dir}/${classes.teste.dir}" srcdir="src-teste">
+			<classpath refid="classpath-compilacao-teste"/>
+		</javac>
+	</target>
+
+	<target name="rodar-teste" depends="compilar-teste">
+		<junit showoutput="true" printsummary="true">
+			<batchtest>
+				<formatter type="plain"/>
+				<fileset dir="src-teste">
+					<include name="**/*Teste.java"/>
+				</fileset>
+			</batchtest>
+			
+			<classpath>
+				<pathelement path="${build.dir}/${classes.teste.dir}"/>
+				<path refid="classpath-compilacao-teste"/>
+			</classpath>
+		</junit>
+	</target>
+	
+	<target name="empacotar" depends="compilar">
+		<war destfile="${build.dir}/agenda.war">
+			<classes dir="${build.dir}/classes" />
+			<fileset dir="WebContent">
+				<exclude name="WEB-INF/classes/" />
+			</fileset>
+		</war>
+	</target>
+	
+	<target name="deploy-local" depends="empacotar">
+	    <copy file="build/agenda.war" todir="/pastaDoTomcat/webapps" />
+	</target>
+	
+	<target name="rodar-tomcat-local">
+	        <exec executable="/pastaDoTomcat/bin/startup.sh" />
+	</target>
+	
+	<target name="parar-tomcat-local">
+	       <exec executable="/pastaDoTomcat/bin/shutdown.sh" />
+	</target>
+	
+	<!-- UTILIZAR CONEXÃO REMOTA
+	A biblioteca se chama Java Secure Channel (jsch) e está disponível em: http://www.jcraft.com/jsch/
+
+	Para adicionar o JAR no classpath podemos usar o parâmetro na linha de comando:
+
+		ant -lib jsch-0.x.xx.jar
+	
+	Ou colocar o JAR na pasta padrão do ANT: /pastaDoUsuario/.ant/lib Essa pasta automaticamente faz parte do classpath do ANT.
+	-->
+	
+	<target name="touch-war-no-servidor-remoto" >
+	      <sshexec host="192.168.0.100" username="caelum" password="senhaSecreta" 
+	            command="touch /pastaDeployRemoto/agenda.war" />
+	</target>
+	
+	<target name="deploy-remoto" >
+	      <scp file="build/agenda.war" todir="usuario@ip-do-servidor:/pastaDeployRemoto" 
+	                        password="senhaSecreta"  trust="true" />
+	</target>
+	
+	<!--
+		Uma tarefa condicional
+		
+		Nesse caso, o target acima só é executado se a variável ambiente.teste for verdadeira. Para deixar isso flexível o ANT, assim como Java, tem uma maneira de definir uma propriedade como parâmetro do executável ant:
+
+			ant -Dambiente.teste=true
+	-->
+	
+	<target name="copiar-recursos-testes" if="ambiente.teste">
+	    <copy  todir="build/classes">
+	        <fileset dir="src-teste">
+	            <include name="hibernate.cfg.xml"/>
+	            <include name="log4j.xml"/>
+	        </fileset> 
+	    </copy>
+	</target>
+	
+</project>

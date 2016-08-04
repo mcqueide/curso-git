@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.oracle.com/adf/controller http://xmlns.oracle.com/adf/controller/adfc-config_1_0.xsd">
+    <task-flow-definition id="EmpsBySalaryTF">
+        <default-activity>SearchBySalary</default-activity>
+        <view id="SearchBySalary">
+            <page>/SearchBySalary.jsff</page>
+        </view>
+        <view id="EmpsBySalary">
+            <page>/EmpsBySalary.jsff</page>
+        </view>
+        <control-flow-rule>
+            <from-activity-id>SearchBySalary</from-activity-id>
+            <control-flow-case>
+                <from-outcome>search</from-outcome>
+                <to-activity-id>EmpsBySalary</to-activity-id>
+            </control-flow-case>
+        </control-flow-rule>
+        <control-flow-rule>
+            <from-activity-id>EmpsBySalary</from-activity-id>
+            <control-flow-case>
+                <from-outcome>back</from-outcome>
+                <to-activity-id>SearchBySalary</to-activity-id>
+            </control-flow-case>
+        </control-flow-rule>
+        <use-page-fragments/>
+    </task-flow-definition>
+</adfc-config>

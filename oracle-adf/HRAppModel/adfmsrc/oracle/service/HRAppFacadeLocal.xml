@@ -30,4 +30,7 @@
    <MethodAccessor IsCollection="false" Type="void" id="removeLocation" ReturnNodeName="Return">
       <ParameterInfo id="location" Type="model.Location" isStructured="true"/>
    </MethodAccessor>
+<MethodAccessor IsCollection="true" Type="model.Employee" BeanClass="model.Employee" id="getEmployeesFindBySal" ReturnNodeName="Employee" CollectionBeanClass="UpdateableCollection">
+      <ParameterInfo id="p_sal" Type="java.math.BigDecimal" isStructured="false"/>
+   </MethodAccessor>
 </JavaBean>

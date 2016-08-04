@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+	<af:panelStretchLayout id="psl1">
+		<f:facet name="center">
+
+			<af:panelGroupLayout id="pg_results">
+
+				<af:panelCollection id="pc_empsResults">
+				
+					<!--Tabela ADF bound to HRAppFacadeLocal.getEmployeesFindBySal(BigDecimal).Employee -->
+					<af:table
+						value="#{bindings.Employee.collectionModel}" var="row"
+						rows="#{bindings.Employee.rangeSize}"
+						emptyText="#{bindings.Employee.viewable ? 'No data to display.' : 'Access Denied.'}"
+						fetchSize="#{bindings.Employee.rangeSize}" rowBandingInterval="0"
+						selectedRowKeys="#{bindings.Employee.collectionModel.selectedRow}"
+						selectionListener="#{bindings.Employee.collectionModel.makeCurrent}"
+						rowSelection="single"
+						filterModel="#{bindings.EmployeeQuery.queryDescriptor}"
+						queryListener="#{bindings.EmployeeQuery.processQuery}"
+						filterVisible="true" varStatus="vs" id="t1">
+						<af:column
+							sortProperty="#{bindings.Employee.hints.employeeId.name}"
+							filterable="true" sortable="true"
+							headerText="#{bindings.Employee.hints.employeeId.label}"
+							id="c1">
+							<af:outputText value="#{row.employeeId}"
+								id="o1">
+							</af:outputText>
+						</af:column>
+						<af:column
+							sortProperty="#{bindings.Employee.hints.firstName.name}"
+							filterable="true" sortable="true"
+							headerText="#{bindings.Employee.hints.firstName.label}"
+							id="c2">
+							<af:outputText value="#{row.firstName}"
+								id="o2">
+							</af:outputText>
+						</af:column>
+						<af:column
+							sortProperty="#{bindings.Employee.hints.lastName.name}"
+							filterable="true" sortable="true"
+							headerText="#{bindings.Employee.hints.lastName.label}" id="c3">
+							<af:outputText value="#{row.lastName}"
+								id="o3">
+							</af:outputText>
+						</af:column>
+						<af:column
+							sortProperty="#{bindings.Employee.hints.email.name}"
+							filterable="true" sortable="true"
+							headerText="#{bindings.Employee.hints.email.label}" id="c4">
+							<af:outputText value="#{row.email}"
+								id="o4">
+							</af:outputText>
+						</af:column>
+						<af:column
+							sortProperty="#{bindings.Employee.hints.commissionPct.name}"
+							filterable="true" sortable="true"
+							headerText="#{bindings.Employee.hints.commissionPct.label}"
+							id="c5">
+							<af:outputText value="#{row.commissionPct}"
+								id="o5">
+							</af:outputText>
+						</af:column>
+						<af:column
+							sortProperty="#{bindings.Employee.hints.salary.name}"
+							filterable="true" sortable="true"
+							headerText="#{bindings.Employee.hints.salary.label}" id="c6">
+							<af:outputText value="#{row.salary}"
+								id="o6">
+							</af:outputText>
+						</af:column>
+					</af:table>
+					
+					
+					
+				</af:panelCollection>
+
+				<af:commandButton action="back" text="Search Again" id="bt_back"></af:commandButton>
+
+			</af:panelGroupLayout>
+
+
+
+		</f:facet>
+	</af:panelStretchLayout>
+</jsp:root>

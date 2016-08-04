@@ -124,6 +124,16 @@ public class HRAppFacade
     /**
      * @generated DT_ID=none
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<Employee> getEmployeesFindBySal(java.math.BigDecimal p_sal) {
+        return em.createNamedQuery("Employees.findBySal").setParameter("p_sal", p_sal).getResultList();
+    }
+
+
+
+    /**
+     * @generated DT_ID=none
+     */
     public Location persistLocation(Location location) {
         em.persist(location);
         return location;

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+	<af:panelStretchLayout id="psl1">
+		<f:facet name="center">
+
+			<!--Form de Parâmetro ADF bound to HRAppFacadeLocal.getEmployeesFindBySal(BigDecimal) -->
+			<af:panelFormLayout id="p1">
+				<af:inputText
+					columns="#{bindings.p_sal.hints.displayWidth}"
+					label="Enter Lowest Salary for Search"
+					maximumLength="#{bindings.p_sal.hints.precision}"
+					required="#{bindings.p_sal.hints.mandatory}"
+					shortDesc="#{bindings.p_sal.hints.tooltip}"
+					value="#{bindings.p_sal.inputValue}" id="i1">
+					<f:validator binding="#{bindings.p_sal.validator}" />
+				</af:inputText>
+				<f:facet name="footer">
+					<af:commandButton
+						disabled="#{!bindings.getEmployeesFindBySal.enabled}"
+						text="Search" id="c1" action="search">
+						<af:setActionListener
+							from="#{bindings.getEmployeesFindBySal_p_sal}"
+							to="#{pageFlowScope.sal}" />
+
+					</af:commandButton>
+				</f:facet>
+			</af:panelFormLayout>
+			
+			
+		</f:facet>
+	</af:panelStretchLayout>
+</jsp:root>

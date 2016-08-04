@@ -13,7 +13,10 @@ import java.util.List;
  */
 @Entity
 @Table(name="EMPLOYEES")
-@NamedQuery(name="Employee.findAll", query="SELECT e FROM Employee e")
+@NamedQueries({
+	@NamedQuery(name="Employee.findAll", query="SELECT e FROM Employee e"),
+	@NamedQuery(name = "Employees.findBySal", query = "select o from Employee o where o.salary > :p_sal")
+})
 public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -5,9 +5,13 @@
    </definitionFactories>
    <pageMap>
       <page path="/MainHR.jspx" usageId="view_"/>
+   <page path="/SearchBySalary.jsff" usageId="view_1"/>
+   <page path="/EmpsBySalary.jsff" usageId="view_2"/>
    </pageMap>
    <pageDefinitionUsages>
       <page id="view_" path="view.pageDefs.MainHRPageDef"/>
+   <page id="view_1" path="view.pageDefs.SearchBySalaryPageDef"/>
+   <page id="view_2" path="view.pageDefs.EmpsBySalaryPageDef"/>
    </pageDefinitionUsages>
    <dataControlUsages>
       <dc id="HRAppFacadeLocal" path="model.HRAppFacadeLocal"/>

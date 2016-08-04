@@ -62,6 +62,11 @@ public interface HRAppFacadeRemote
     /**
      * @generated DT_ID=none
      */
+    public List<Employee> getEmployeesFindBySal(java.math.BigDecimal p_sal);
+
+    /**
+     * @generated DT_ID=none
+     */
     public Location persistLocation(Location location);
 
     /**

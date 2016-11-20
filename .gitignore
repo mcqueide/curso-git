@@ -27,6 +27,7 @@ alura-gulp/dist/
 **/*.settings/
 **/*.tern-project
 **/target/
+**/bin/
 alura-ant/agenda/BUILD/
 alura-ant/agenda/WebContent/WEB-INF/classes/
 alura-ant/treinamento/bin/

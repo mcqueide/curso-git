@@ -10,8 +10,12 @@ public class ProcessaVenda {
 
 	public static void main(String[] args) throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setValidating(true);
+		factory.setNamespaceAware(true);
+		factory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
+		
 		DocumentBuilder builder = factory.newDocumentBuilder();
-		Document document = builder.parse("venda.xml");
+		Document document = builder.parse("src/venda.xml");
 		
 		NodeList formasPagamento = document.getElementsByTagName("formaDePagamento");
 		System.out.println(formasPagamento.item(0).getTextContent());

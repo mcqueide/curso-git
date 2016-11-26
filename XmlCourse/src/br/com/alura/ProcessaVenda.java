@@ -1,8 +1,13 @@
 package br.com.alura;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.events.XMLEvent;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -16,7 +21,35 @@ import br.com.alura.handler.ProdutosHandler;
 public class ProcessaVenda {
 
 	public static void main(String[] args) throws Exception {
-		lerPeloSax();
+		lerPeloStax();
+	}
+	
+	public static void lerPeloStax() throws Exception{
+		FileInputStream fileInputStream = new FileInputStream("src/venda.xml");
+		XMLInputFactory factory = XMLInputFactory.newInstance();
+		XMLEventReader eventos = factory.createXMLEventReader(fileInputStream);
+		Produto produto = new Produto();
+		List<Produto> produtos = new ArrayList<>();
+		
+		while(eventos.hasNext()){
+			XMLEvent evento = eventos.nextEvent();
+			
+			if(evento.isStartElement() && evento.asStartElement().getName().getLocalPart().equals("produto")){
+				produto = new Produto();
+			}else if(evento.isStartElement() && evento.asStartElement().getName().getLocalPart().equals("nome")){
+				evento = eventos.nextEvent();
+				String nome = evento.asCharacters().getData();
+				produto.setNome(nome);
+			}else if(evento.isStartElement() && evento.asStartElement().getName().getLocalPart().equals("preco")){
+				evento = eventos.nextEvent();
+				String nome = evento.asCharacters().getData();
+				produto.setPreco(Double.parseDouble(nome));
+			}else if(evento.isEndElement() && evento.asEndElement().getName().getLocalPart().equals("produto")){
+				produtos.add(produto);
+			}
+		}
+		
+		System.out.println(produtos);
 	}
 	
 	public static void lerPeloSax() throws Exception{

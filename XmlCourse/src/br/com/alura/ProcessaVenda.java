@@ -8,6 +8,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.events.XMLEvent;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,7 +25,7 @@ import br.com.alura.handler.ProdutosHandler;
 public class ProcessaVenda {
 
 	public static void main(String[] args) throws Exception {
-		lerPeloStax();
+		utilizandoXPath();
 	}
 	
 	public static void lerPeloStax() throws Exception{
@@ -80,6 +84,40 @@ public class ProcessaVenda {
 		System.out.println(moeda);
 		
 		NodeList produtos = document.getElementsByTagName("produto");
+		for(int i=0;i<produtos.getLength();i++){
+			Element produtoElement = (Element) produtos.item(i);
+			String nome = produtoElement.getElementsByTagName("nome").item(0).getTextContent();
+			double preco = Double.parseDouble(produtoElement.getElementsByTagName("preco").item(0).getTextContent());
+			
+		    Produto produto = new Produto(nome,preco);
+		    
+		    System.out.println(produto);
+		}
+	}
+	
+	public static void utilizandoXPath() throws Exception{
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setValidating(true);
+		factory.setNamespaceAware(true);
+		factory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
+		
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document document = builder.parse("src/venda.xml");
+		
+		NodeList formasPagamento = document.getElementsByTagName("formaDePagamento");
+		System.out.println(formasPagamento.item(0).getTextContent());
+		
+		String moeda = document.getDocumentElement().getAttribute("moeda");
+		System.out.println(moeda);
+
+		//String exp = "venda/produtos/produto[nome='Livro']";
+		//String exp = "venda/produtos/produto[contains(nome,'java')]";
+		//String exp = "venda/produtos/produto[2]";
+		String exp = "venda/produtos/produto";
+		XPath path = XPathFactory.newInstance().newXPath();
+		XPathExpression expression = path.compile(exp);
+		
+		NodeList produtos = (NodeList) expression.evaluate(document, XPathConstants.NODESET);
 		for(int i=0;i<produtos.getLength();i++){
 			Element produtoElement = (Element) produtos.item(i);
 			String nome = produtoElement.getElementsByTagName("nome").item(0).getTextContent();

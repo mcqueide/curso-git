@@ -1,14 +1,37 @@
 package br.com.alura;
+import java.io.FileInputStream;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+import br.com.alura.handler.ProdutosHandler;
 
 public class ProcessaVenda {
 
 	public static void main(String[] args) throws Exception {
+		lerPeloSax();
+	}
+	
+	public static void lerPeloSax() throws Exception{
+		XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+		ProdutosHandler produtosHandler = new ProdutosHandler();
+		xmlReader.setContentHandler(produtosHandler);
+		
+		FileInputStream fileInputStream = new FileInputStream("src/venda.xml");
+		InputSource inputSource = new InputSource(fileInputStream);
+		
+		xmlReader.parse(inputSource);
+		System.out.println(produtosHandler.getProdutos());
+	}
+	
+	public static void lerPeloDOM() throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(true);
 		factory.setNamespaceAware(true);

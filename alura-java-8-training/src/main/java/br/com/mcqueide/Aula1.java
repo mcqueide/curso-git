@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * Hello world!
  *
  */
-public class App 
+public class Aula1 
 {
     private static List<String> palavras;
 

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://ws.estoque.caelum.com.br/" xmlns:tns="http://ws.estoque.caelum.com.br/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="autorizacaoFault" type="tns:AutorizacaoException"/>
+
+  <xs:element name="cadastrarItem" type="tns:cadastrarItem"/>
+
+  <xs:element name="cadastrarItemResponse" type="tns:cadastrarItemResponse"/>
+
+  <xs:element name="filtros" type="tns:filtros"/>
+
+  <xs:element name="getItens" type="tns:getItens"/>
+
+  <xs:element name="item" type="tns:item"/>
+
+  <xs:element name="listaItens" type="tns:listaItens"/>
+
+  <xs:element name="todosOsItens" type="tns:todosOsItens"/>
+
+  <xs:element name="todosOsItensComFiltro" type="tns:todosOsItensComFiltro"/>
+
+  <xs:element name="todosOsItensComFiltroResponse" type="tns:todosOsItensComFiltroResponse"/>
+
+  <xs:element name="token" nillable="true" type="tns:tokenUsuario"/>
+
+  <xs:element name="tokenUsuario" type="tns:tokenUsuario"/>
+
+  <xs:complexType name="cadastrarItem">
+    <xs:sequence>
+      <xs:element name="item" type="tns:item" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="item">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:string"/>
+      <xs:element name="nome" type="xs:string"/>
+      <xs:element name="tipo" type="xs:string"/>
+      <xs:element name="quantidade" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tokenUsuario">
+    <xs:sequence>
+      <xs:element name="token" type="xs:string"/>
+      <xs:element name="dataValidade" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cadastrarItemResponse">
+    <xs:sequence>
+      <xs:element name="item" type="tns:item" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AutorizacaoException">
+    <xs:sequence>
+      <xs:element name="faltInfo" type="xs:string" minOccurs="0"/>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="todosOsItensComFiltro">
+    <xs:sequence>
+      <xs:element name="filtros" type="tns:filtros" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="filtros">
+    <xs:sequence>
+      <xs:element name="filtro" type="tns:filtro" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="filtro">
+    <xs:sequence>
+      <xs:element name="nome" type="xs:string" minOccurs="0"/>
+      <xs:element name="tipo" type="tns:tipoItem" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="todosOsItensComFiltroResponse">
+    <xs:sequence>
+      <xs:element name="itens" type="tns:listaItens" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="listaItens">
+    <xs:sequence>
+      <xs:element name="item" type="tns:item" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="todosOsItens">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="getItens">
+    <xs:sequence>
+      <xs:element name="itens" type="tns:listaItens" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="tipoItem">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Livro"/>
+      <xs:enumeration value="Celular"/>
+      <xs:enumeration value="Tablet"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

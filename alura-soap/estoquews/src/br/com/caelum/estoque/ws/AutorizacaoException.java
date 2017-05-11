@@ -2,7 +2,7 @@ package br.com.caelum.estoque.ws;
 
 import javax.xml.ws.WebFault;
 
-@WebFault(name="autorizacaoFault")
+@WebFault(name="autorizacaoFault", messageName="AutorizacaoFault")
 public class AutorizacaoException extends Exception {
 
 	private static final long serialVersionUID = 1L;

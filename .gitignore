@@ -15,3 +15,11 @@
 **/BUILD/
 **/classes/
 **/build/
+**/.DS_Store?
+**/.dpl/
+**/vscode
+**/.vscode
+**/typings
+alura-angular2/alurapic/client/app/**/*.js
+**/*.map
+**/*.log

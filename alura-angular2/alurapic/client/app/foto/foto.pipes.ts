@@ -6,8 +6,8 @@ import {FotoComponent} from './foto.component';
 })
 export class FiltroPorTitulo implements PipeTransform{
 
-    transform(fotos:FotoComponent,digitado:string){
-        console.log(fotos);
-        console.log(digitado);
+    transform(fotos:FotoComponent[],digitado:string){
+        digitado = digitado.toLowerCase();
+        return fotos.filter( foto => foto.titulo.toLowerCase().includes(digitado))
     }
 }

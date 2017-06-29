@@ -23,3 +23,4 @@
 alura-angular2/alurapic/client/app/**/*.js
 **/*.map
 **/*.log
+data.db

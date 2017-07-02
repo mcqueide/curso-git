@@ -24,11 +24,13 @@ export class CadastroComponent{
         this.route.params.subscribe(params => {
             let id = params['id'];
             
-            this.service.buscaPorId(id)
+            if(id){
+                this.service.buscaPorId(id)
                 .subscribe(
                     (foto) => this.foto = foto,
                     (erro) => console.log(erro)
-                )
+                );
+            }
         })
 
         this.meuForm = fb.group({

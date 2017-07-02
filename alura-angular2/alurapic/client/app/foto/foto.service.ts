@@ -1,6 +1,6 @@
-import {Http,Headers} from '@angular/http';
+import {Http,Headers, Response} from '@angular/http';
 import {FotoComponent} from './foto.component';
-
+import {Observable} from 'rxjs';
 export class FotoService{
 
     http:Http;
@@ -15,11 +15,11 @@ export class FotoService{
         this.headers.append('Content-Type','application/json');
     }
 
-    cadastrar(foto: FotoComponent){
+    cadastrar(foto: FotoComponent): Observable<Response>{
         return this.http.post(this.url,JSON.stringify(foto),{headers:this.headers});
     }
 
-    listar(){
+    listar(): Observable<FotoComponent[]>{
         return this.http.get(this.url)
             .map(res => res.json());
     }

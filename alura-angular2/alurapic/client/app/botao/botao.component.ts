@@ -11,12 +11,16 @@ export class BotaoComponent{
     @Input() estilo: string = 'btn-default';
     @Input() tipo: string = 'buttom';
     @Input() desabilitado: boolean = false;
+    @Input() confirmacao: boolean = false;
     @Output() acao = new EventEmitter();
 
     executaAcao(){
-
-        if(confirm("Deseja excluir a foto?")){
-            this.acao.emit(null);
+        if(this.confirmacao){
+            if(confirm("Tem certeza?")){
+                this.acao.emit(null);
+            }
+            return;
         }
+        this.acao.emit(null);
     }
 }

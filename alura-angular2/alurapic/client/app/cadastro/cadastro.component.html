@@ -37,10 +37,8 @@
                 </textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary" [disabled]="meuForm.invalid">
-                Salvar
-            </button>
-             <a [routerLink]="['']" class="btn btn-primary">Voltar</a>
+            <botao nome="Salvar" estilo="btn-primary" tipo="submit" [desabilitado]="meuForm.invalid"></botao>
+            <a [routerLink]="['']" class="btn btn-primary">Voltar</a>
             <hr>
         </div>
 

@@ -24,7 +24,15 @@ export class ListagemComponent{
     remover(foto:FotoComponent){
         this.service.remover(foto)
             .subscribe(
-                () => console.log("Removida com sucesso"),
+                () => {
+                    console.log("Removida com sucesso");
+                    let novasFotos = this.fotos.slice(0);
+
+                    let indice = novasFotos.indexOf(foto);
+                    novasFotos.splice(indice,1);
+
+                    this.fotos = novasFotos;
+                },
                 (erro) => console.log(erro)
             );
     }

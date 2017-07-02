@@ -48,10 +48,10 @@ export class CadastroComponent{
         
         this.service.cadastrar(this.foto)
             .subscribe(res => {
-                this.mensagem = res.obterMensagem();
+                this.mensagem = res.mensagem;
                 this.foto = new FotoComponent();
                 
-                if(!res.ehInclusao()){
+                if(!res.inclusao){
                     this.router.navigate(['']);
                 }
             }, erro => console.log(erro));

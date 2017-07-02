@@ -18,4 +18,8 @@ export class ListagemComponent{
                 erro => console.log(erro)
             );
     }
+
+    remover(foto:FotoComponent){
+        console.log(foto);
+    }
 }

@@ -10,9 +10,11 @@ import {FotoComponent} from '../foto/foto.component';
 export class ListagemComponent{
 
     fotos: FotoComponent[] = [];
+    service: FotoService;
 
     constructor(service: FotoService){
-        service.listar()
+        this.service = service;
+        this.service.listar()
             .subscribe(
                 fotos => this.fotos = fotos,
                 erro => console.log(erro)
@@ -20,6 +22,10 @@ export class ListagemComponent{
     }
 
     remover(foto:FotoComponent){
-        console.log(foto);
+        this.service.remover(foto)
+            .subscribe(
+                () => console.log("Removida com sucesso"),
+                (erro) => console.log(erro)
+            );
     }
 }

@@ -8,7 +8,7 @@ import {Component,Input, OnInit} from '@angular/core';
 })
 export class PainelComponent implements OnInit{
 
-    @Input() titulo:String;
+    @Input() titulo:string;
 
     ngOnInit(){
         this.titulo = this.titulo.length > 7 

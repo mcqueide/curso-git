@@ -54,6 +54,9 @@ export class CadastroComponent{
                 if(!res.inclusao){
                     this.router.navigate(['']);
                 }
-            }, erro => console.log(erro));
+            }, erro => {
+                console.log(erro);
+                this.mensagem = 'Não foi possível savar a foto';
+            });
     }
 }

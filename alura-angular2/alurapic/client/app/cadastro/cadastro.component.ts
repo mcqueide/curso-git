@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {FotoComponent} from '../foto/foto.component';
-import {Http,Headers} from '@angular/http';
 import {FormGroup,FormBuilder,Validators} from '@angular/forms';
 
 @Component({
@@ -11,11 +10,9 @@ import {FormGroup,FormBuilder,Validators} from '@angular/forms';
 export class CadastroComponent{
 
     foto: FotoComponent = new FotoComponent();
-    http: Http;
     meuForm: FormGroup;
 
-    constructor(http:Http, fb: FormBuilder){
-        this.http = http;
+    constructor(fb: FormBuilder){
         this.meuForm = fb.group({
             titulo: ['', Validators.compose([Validators.required,Validators.minLength(4)])],
             url: ['', Validators.required],
@@ -29,11 +26,11 @@ export class CadastroComponent{
         let header = new Headers();
         header.append('Content-Type','application/json');
 
-        this.http.post('v1/fotos',JSON.stringify(this.foto),{headers:header})
-            .subscribe(() => {
-                this.foto = new FotoComponent();
-                console.log("Foto cadastrada com sucesso.")
-            }, erro => console.log(erro));
+        // this.http.post('v1/fotos',JSON.stringify(this.foto),{headers:header})
+        //     .subscribe(() => {
+        //         this.foto = new FotoComponent();
+        //         console.log("Foto cadastrada com sucesso.")
+        //     }, erro => console.log(erro));
         
     }
 }

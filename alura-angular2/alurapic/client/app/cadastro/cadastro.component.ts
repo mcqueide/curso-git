@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormGroup,FormBuilder,Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {FotoComponent} from '../foto/foto.component';
 import {FotoService} from '../foto/foto.service';
@@ -16,10 +16,12 @@ export class CadastroComponent{
     meuForm: FormGroup;
     service: FotoService;
     route: ActivatedRoute;
+    router: Router;
 
-    constructor(service: FotoService, fb: FormBuilder, route: ActivatedRoute){
+    constructor(service: FotoService, fb: FormBuilder, route: ActivatedRoute, router: Router){
         this.service = service;
         this.route = route;
+        this.router = router;
 
         this.route.params.subscribe(params => {
             let id = params['id'];
@@ -46,7 +48,8 @@ export class CadastroComponent{
         this.service.cadastrar(this.foto)
             .subscribe(() => {
                 this.foto = new FotoComponent();
-                console.log("Foto cadastrada com sucesso.")
+                console.log("Foto cadastrada com sucesso.");
+                this.router.navigate(['']);
             }, erro => console.log(erro));
     }
 }

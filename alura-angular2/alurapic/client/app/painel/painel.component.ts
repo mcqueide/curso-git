@@ -22,6 +22,6 @@ export class PainelComponent implements OnInit{
     }
 
     fadeOut(cb){
-        $(this.elemento).fadeOut(cb);
+        $(this.elemento.nativeElement).fadeOut(cb);
     }
 }

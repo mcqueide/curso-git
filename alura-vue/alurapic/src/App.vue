@@ -2,11 +2,14 @@
   <div class="corpo">
     <h1 class="centralizado">{{ titulo }}</h1>
 
+    <input type="search" class="filtro" v-on:input="filtro = $event.target.value" 
+      placeholder="filtre pelo título da foto">
+
     <ul class="lista-fotos">
-      <li class="lista-fotos-item" v-for="foto of fotos">
+      <li class="lista-fotos-item" v-for="foto of fotosComFiltro">
 
         <meu-painel :titulo="foto.titulo">
-          <img class="imagem-responsiva" :src="foto.url" :alt="foto.titulo">
+          <imagem-responsiva :url="foto.url" :titulo="foto.titulo"/>
         </meu-painel>
 
       </li>
@@ -20,18 +23,34 @@
 // importando nosso Painel 
 
 import Painel from './components/shared/painel/Painel.vue';
+import ImagemResponsiva from './components/shared/imagem-responsiva/ImagemResponsiva.vue';
 
 export default {
 
   components: {
 
-    'meu-painel': Painel
+    'meu-painel': Painel,
+    'imagem-responsiva': ImagemResponsiva
   },
 
   data() {
     return {
       titulo: 'Alurapic',
-      fotos: []
+      fotos: [],
+      filtro: ''
+    }
+  },
+
+  computed: {
+    fotosComFiltro() {
+      if (this.filtro) {
+        // filtra a lista, por enquanto vamos retornar uma lista em branco
+        let exp = new RegExp(this.filtro.trim(), 'i');
+        return this.fotos.filter(foto => exp.test(foto.titulo));
+      } else {
+        // se o campo estiver vazio, não filtramos, retornamos a lista
+        return this.fotos;
+      }
     }
   },
 
@@ -66,26 +85,8 @@ export default {
     width: 100%;
   }
 
-  /* estilo do painel */ 
-
-  .painel {
-    padding: 0 auto;
-    border: solid 2px grey;
-    display: inline-block;
-    margin: 5px;
-    box-shadow: 5px 5px 10px grey;
-    width: 200px;
-    height: 100%;
-    vertical-align: top;
-    text-align: center;
-  }
-
-  .painel .painel-titulo {
-    text-align: center;
-    border: solid 2px;
-    background: lightblue;
-    margin: 0 0 15px 0;
-    padding: 10px;
-    text-transform: uppercase;
+  .filtro {
+    display: block;
+    width: 100%;
   }
 </style>

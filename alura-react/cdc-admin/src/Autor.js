@@ -36,7 +36,7 @@ export class FormularioAutor extends Component {
       data: JSON.stringify({ nome: this.state.nome, email: this.state.email, senha: this.state.senha }),
       success: function (resposta) {
         console.log("enviado com sucesso");
-        this.setState({ lista: resposta });
+        this.props.callbackAtualizaListagem(resposta);
       }.bind(this),
       error: function (resposta) {
         console.log("erro");
@@ -61,23 +61,8 @@ export class FormularioAutor extends Component {
     );
   }
 }
+
 export class TabelaAutores extends Component {
-
-  constructor() {
-    super();
-    this.state = { lista: [] };
-  }
-
-  componentDidMount() {
-    $.ajax({
-      url: "http://localhost:8080/api/autores",
-      dataType: 'json',
-      success: function (resposta) {
-        this.setState({ lista: resposta });
-      }.bind(this)
-    }
-    );
-  }
 
   render() {
     return (
@@ -91,7 +76,7 @@ export class TabelaAutores extends Component {
           </thead>
           <tbody>
             {
-              this.state.lista.map(autor => {
+              this.props.lista.map(autor => {
                 return (
                   <tr key={autor.id}>
                     <td>{autor.nome}</td>
@@ -102,6 +87,39 @@ export class TabelaAutores extends Component {
             }
           </tbody>
         </table>
+      </div>
+    );
+  }
+}
+
+export default class AutorBox extends Component {
+
+  constructor() {
+    super();
+    this.state = { lista: [] };
+    this.atualizaListagem = this.atualizaListagem.bind(this);
+  }
+
+  componentDidMount() {
+    $.ajax({
+      url: "http://localhost:8080/api/autores",
+      dataType: 'json',
+      success: function (resposta) {
+        this.setState({ lista: resposta });
+      }.bind(this)
+    }
+    );
+  }
+
+  atualizaListagem(novaLista) {
+    this.setState({lista:novaLista});
+  }
+
+  render() {
+    return (
+      <div>
+        <FormularioAutor callbackAtualizaListagem={this.atualizaListagem}></FormularioAutor>
+        <TabelaAutores lista={this.state.lista}></TabelaAutores>
       </div>
     );
   }

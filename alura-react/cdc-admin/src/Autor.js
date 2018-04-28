@@ -38,17 +38,15 @@ export class FormularioAutor extends Component {
       type: 'post',
       data: JSON.stringify({ nome: this.state.nome, email: this.state.email, senha: this.state.senha }),
       success: function (resposta) {
-        PubSub.publish('atualiza-lista-autores',resposta);
-        this.setState({nome:''});
-        this.setState({email:''});
-        this.setState({senha:''});
+        PubSub.publish('atualiza-lista-autores', resposta);
+        this.setState({ nome: '', email: '', senha: '' });
       }.bind(this),
       error: function (resposta) {
-        if(resposta.status === 400){
+        if (resposta.status === 400) {
           new TratadorErros().publicaErros(resposta.responseJSON);
         }
-      },beforeSend: function(){
-        PubSub.publish("limpa-erros",{});
+      }, beforeSend: function () {
+        PubSub.publish("limpa-erros", {});
       }
     });
   }
@@ -119,20 +117,25 @@ export default class AutorBox extends Component {
     }
     );
 
-    PubSub.subscribe('atualiza-lista-autores', function(topico,novaLista){
-      this.setState({lista:novaLista});
+    PubSub.subscribe('atualiza-lista-autores', function (topico, novaLista) {
+      this.setState({ lista: novaLista });
     }.bind(this));
   }
 
   atualizaListagem(novaLista) {
-    this.setState({lista:novaLista});
+    this.setState({ lista: novaLista });
   }
 
   render() {
     return (
       <div>
-        <FormularioAutor></FormularioAutor>
-        <TabelaAutores lista={this.state.lista}></TabelaAutores>
+        <div className="header">
+          <h1>Cadastro de autores</h1>
+        </div>
+        <div className="content" id="content">
+          <FormularioAutor />
+          <TabelaAutores lista={this.state.lista} />
+        </div>
       </div>
     );
   }

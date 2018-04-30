@@ -1,0 +1,1 @@
+java -Dspring.datasource.password=root -Dspring.datasource.url=jdbc:mysql://192.168.99.100/instalura?createDatabaseIfNotExist=true -jar instalura.jar

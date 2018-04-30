@@ -4,7 +4,7 @@ import './css/pure-min.css';
 import './css/side-menu.css';
 import $ from 'jquery';
 
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 class App extends Component {
 

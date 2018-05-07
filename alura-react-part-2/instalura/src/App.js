@@ -1,20 +1,8 @@
 import React, { Component } from 'react';
 import Header from './componentes/Header';
 import Timeline from './componentes/Timeline';
-import TimelineStore from './logicas/TimelineStore';
 import { createStore } from 'redux';
-
-const timelineStore = new TimelineStore([]);
-
-//REDUCER
-function timeline(state=[], action) {
-  if(action.type === 'LISTAGEM') {
-    console.log('entrou na listagem');
-    return state;
-  }
-
-  return state;
-}
+import { timeline } from './reducers/timeline';
 
 const store = createStore(timeline);
 

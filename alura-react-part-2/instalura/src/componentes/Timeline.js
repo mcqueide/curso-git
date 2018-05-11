@@ -25,7 +25,7 @@ export default class Timeline extends Component {
       urlPerfil = `http://localhost:8080/api/public/fotos/${this.login}`;
     }
 
-    TimelineApi.lista(urlPerfil, this.props.store);
+    this.props.store.dispatch(TimelineApi.lista(urlPerfil));
   }
 
   componentDidMount() {

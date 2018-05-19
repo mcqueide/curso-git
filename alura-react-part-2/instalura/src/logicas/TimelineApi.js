@@ -1,3 +1,5 @@
+import { listagem, comentario, like } from '../actions/actionCreator';
+
 export default class TimelineApi {
 
   static lista(urlPerfil) {
@@ -5,7 +7,7 @@ export default class TimelineApi {
       fetch(urlPerfil)
         .then(response => response.json())
         .then(fotos => {
-          dispatch({ type: 'LISTAGEM', fotos })
+          dispatch(listagem(fotos))
           return fotos;
         });
     }
@@ -30,7 +32,7 @@ export default class TimelineApi {
           }
         })
         .then(novoComentario => {
-          dispatch({ type: 'COMENTARIO', fotoId, novoComentario });
+          dispatch(comentario(fotoId, novoComentario));
           return novoComentario;
         });
     }
@@ -47,7 +49,7 @@ export default class TimelineApi {
           }
         })
         .then(liker => {
-          dispatch({ type: 'LIKE', fotoId, liker });
+          dispatch(like(fotoId, liker));
           return liker;
         });
     }

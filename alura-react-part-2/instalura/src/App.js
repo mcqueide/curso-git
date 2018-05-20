@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Header from './componentes/Header';
 import Timeline from './componentes/Timeline';
 
@@ -18,7 +17,7 @@ class App extends Component {
 }
 
 App.contextTypes = {
-  store: PropTypes.object.isRequired
+  store: React.PropTypes.object.isRequired
 }
 
 export default App;

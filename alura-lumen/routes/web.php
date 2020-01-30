@@ -17,4 +17,8 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => '/api'], function () use ($router) {
     $router->get('/series', 'SeriesController@index');
+    $router->get('/series/{id}', 'SeriesController@show');
+    $router->post('/series', 'SeriesController@store');
+    $router->put('/series/{id}', 'SeriesController@update');
+    $router->delete('/series/{id}', 'SeriesController@destroy');
 });

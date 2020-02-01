@@ -13,7 +13,7 @@ abstract class BaseController
 
     public function index()
     {
-        return $this->classe::all();
+        return $this->classe::paginate();
     }
 
     public function store(Request $request)
@@ -23,29 +23,29 @@ abstract class BaseController
 
     public function show(int $id)
     {
-        $serie = $this->classe::find($id);
+        $recurso = $this->classe::find($id);
 
-        if (is_null($serie)) {
+        if (is_null($recurso)) {
             return response()->json('', 204);
         }
 
-        return response()->json($serie);
+        return response()->json($recurso);
     }
 
     public function update(int $id, Request $request)
     {
-        $serie = $this->classe::find($id);
+        $recurso = $this->classe::find($id);
 
-        if (is_null($serie)) {
+        if (is_null($recurso)) {
             return response()->json([
                 'erro' => 'Recurso não encontrado'
             ], 404);
         }
 
-        $serie->fill($request->all());
-        $serie->save();
+        $recurso->fill($request->all());
+        $recurso->save();
 
-        return $serie;
+        return $recurso;
     }
 
     public function destroy(int $id)

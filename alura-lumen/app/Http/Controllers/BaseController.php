@@ -11,14 +11,18 @@ abstract class BaseController
 
     protected $classe;
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->classe::paginate();
+        return $this->classe::paginate($request->per_page);
     }
 
     public function store(Request $request)
     {
-        return response()->json($this->classe::create($request->all()), 201);
+        return response()
+            ->json(
+                $this->classe::create($request->all()),
+                201
+            );
     }
 
     public function show(int $id)

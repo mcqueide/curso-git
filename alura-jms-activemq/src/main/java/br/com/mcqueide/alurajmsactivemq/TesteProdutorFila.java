@@ -9,7 +9,7 @@ import javax.jms.Session;
 import javax.naming.InitialContext;
 import java.util.Scanner;
 
-public class TesteProdutorFile {
+public class TesteProdutorFila {
 
     public static void main(String[] args) throws Exception{
 

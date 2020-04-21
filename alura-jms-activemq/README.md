@@ -43,3 +43,12 @@ abaixo dentro do **<broker>...</broker>**. Lembrar de adicionar as credenciais n
     </authorizationPlugin>
 </plugins>
 ```
+
+## aula 8, habilitar prioridades no activemq
+
+Para habilitar prioridade no activemq, edite o arquivo `conf/activemq.xml` adicionando o conteúdo
+abaixo dentro do  **<destinationPolicy><policyMap><policyEntries>...</policyEntries></policyMap></destinationPolicy>**.
+
+```xml
+<policyEntry queue=">" prioritizedMessages="true"/>
+```

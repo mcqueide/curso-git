@@ -12,7 +12,7 @@ import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 import java.util.Scanner;
 
-public class TesteConsumidorTopico {
+public class ProcessadorLog {
 
     public static void main(String[] args) throws Exception{
 
@@ -25,8 +25,8 @@ public class TesteConsumidorTopico {
 
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-        Destination topico = (Destination) context.lookup("loja");
-        MessageConsumer consumer = session.createConsumer(topico);
+        Destination fila = (Destination) context.lookup("LOG");
+        MessageConsumer consumer = session.createConsumer(fila);
 
         consumer.setMessageListener(new MessageListener() {
             public void onMessage(Message message) {

@@ -2,17 +2,15 @@ package br.com.mcqueide.alurajmsactivemq;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.DeliveryMode;
 import javax.jms.Destination;
-import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
+import javax.jms.MessageProducer;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 import java.util.Scanner;
 
-public class TesteConsumidorTopico {
+public class ProdutorMensagemLog {
 
     public static void main(String[] args) throws Exception{
 
@@ -25,21 +23,18 @@ public class TesteConsumidorTopico {
 
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-        Destination topico = (Destination) context.lookup("loja");
-        MessageConsumer consumer = session.createConsumer(topico);
+        Destination fila = (Destination) context.lookup("LOG");
 
-        consumer.setMessageListener(new MessageListener() {
-            public void onMessage(Message message) {
-                TextMessage textMessage = (TextMessage) message;
+        MessageProducer producer = session.createProducer(fila);
 
-                try {
-                    String mensagem = textMessage.getText();
-                    System.out.println(mensagem);
-                } catch (JMSException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        Message messageDebug = session.createTextMessage("DEBUG | .....");
+        producer.send(messageDebug, DeliveryMode.NON_PERSISTENT, 1, 5000);
+        Message messageInfo = session.createTextMessage("INFO | .....");
+        producer.send(messageInfo, DeliveryMode.NON_PERSISTENT, 3, 5000);
+        Message messageWarn = session.createTextMessage("WARN | .....");
+        producer.send(messageWarn, DeliveryMode.NON_PERSISTENT, 7, 5000);
+        Message messageErro = session.createTextMessage("ERROR | .....");
+        producer.send(messageErro, DeliveryMode.NON_PERSISTENT, 9, 5000);
 
         new Scanner(System.in).nextLine(); //parar o programa para testar a conexao
 

@@ -16,6 +16,13 @@ export class RecipeService {
       [
         new Ingredient('Meat', 1),
         new Ingredient('French Fries', 20)
+      ]),
+    new Recipe('Big Fat Burger',
+      'What else you need to say?',
+      'https://www.revistamenu.com.br/wp-content/uploads/2019/08/image001.png',
+      [
+        new Ingredient('Meat', 1),
+        new Ingredient('Burns', 2)
       ])
   ];
 
@@ -24,6 +31,10 @@ export class RecipeService {
 
   getRecipes() {
     return this.recipes.slice();
+  }
+
+  getRecipe(index: number) {
+    return this.recipes[index];
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {

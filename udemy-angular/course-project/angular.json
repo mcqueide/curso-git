@@ -120,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "course-project"
+    }
+  },
+  "defaultProject": "course-project",
+  "cli": {
+    "analytics": "f2f1afc5-b89a-4a88-8c84-2b11eb37b142"
+  }
 }

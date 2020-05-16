@@ -4,16 +4,18 @@ import { FormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
+import { FirstAssignmentComponent } from './assignment/first-assignment/first-assignment.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FirstAssignmentComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [FirstAssignmentComponent]
 })
 export class AppModule { }

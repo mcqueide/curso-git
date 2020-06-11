@@ -1,0 +1,259 @@
+Aula 1
+
+- Capacidade pouco aproveitada, as aplicações não usam todo o potencial dos servidores para previnir 
+o risco de derrubar o servidor.
+
+- Com a virtualização ajudou a questão do aproveitamento da capacidade
+
+- O problema das VMs, cada uma delas tem que ter seu próprio sistema operacional, ou seja já tem um
+custo inicial de hardwate obrigatório e de manutenção também (atualização do SO, segurança e configuração)
+
+- Com containers, é necessário apenas um SO e podemos ter vários containters, então há economia 
+de recursos e de manutenção.
+
+- As vatagens de rodar as aplicações isoladas em VMs ou containers, é que uma aplicação não é
+prejudicada por outra, então se um container cair não irá derrubar os outros e ele pode ser facilmente
+levantado.
+
+- Docker Inc era dotCloud, como o Azure ou amazon web services tinha o objetivo hospedar aplicações
+
+- A Docker Inc Criou o Docker Engine para economizar custos e facilitar manutenção
+
+- O Docker no Windows roda em cima do Hyper-V e tem uma camada Docker que roda em um 
+Alpine Linux (micro VM)
+
+- O Docker toolbox roda em cima do virtual box e tem uma camada Docker que roda em um Alpine
+
+- No Mac tem um equivalente ao hyper V, que é o hyper kit
+
+Aula 2
+
+- Docker hub é o repositório de imagens do Docker
+
+- use comando "docker ps" para listar os containers em execução
+
+- use comando "docker ps -a" para listar todos os containers
+
+- use comando "docker run -it ubuntu" para o terminal ficar integrado ao terminal do container
+
+- use comando "docker start [id do container ou nome]" para iniciar um container parado
+
+- use comando "docker stop [id do container ou nome]" para parar um container
+
+- use comando "docker start -a -i [id do container ou nome]" para iniciar um container parado
+com o terminal integrado ao do container o -a é de attach
+
+- use comando "docker rm [id do container ou nome]" para remover um container
+
+- use comando "docker container prune" para remover os containers parados
+
+- use comando "docker rmi [nome]" para remover uma imagem
+
+- camadas de imagem, permite o reuso de uma camada para economia de espaço em disco
+
+- use o comando "docker run -d [nome da imagem]" para rodar o container sem travar o terminal
+
+- use o comando "docker run -d -P dockersamples/static-site" para o docker atribuir portas aleatória
+para as portas do container docker
+
+- use o comando "docker port [id container]" para visualizar as portas
+
+- se tiver usando o docker toolbox use o comando "docker-machine ip" para descobrir o ip da 
+máquina docker, isso é necessário porque o docker não roda no localhost e sim dentro de uma VM
+
+- use o parâmetro "--name" em conjunto com o "docker run" para definir um nome para o container
+
+- use o parâmetro "-p" em conjunto com o "docker run" para fazer o bind das portas externas com 
+as portas expostas pelo container
+
+- use o parâmetro "-e" em conjunto com o "docker run" para passar variáveis de ambientes para o 
+container, exemplo -e AUTHOR="Mc.Queide"
+
+- use o comando "docker stop $(docker ps -q)" para parar todos os containers de uma vez
+
+Aula 3
+
+- volume é uma pasta compartilhada entre o container e o docker host. Então ao escrever numa pasta
+dentro do container a escrita será realizada na pasta no docker host.
+
+- use o comando "docker inspect [id container]" para inspecionar o container
+
+- use o parâmetro "-v" em conjunto com o docker run para mapear volumes. 
+Exemplo: "docker run -it -v "C:\Users\Alura\Desktop:/var/www" ubuntu"
+
+- Para rodar um servidor node de exemplo descompacte o zip volume-exemplo.zip e faça um volume 
+apontando para /var/www do seu container.
+"docker run -p 8080:3000 -v "C:\Users\Alura\Desktop\volume-exemplo:/var/www" node npm start"
+Só que isso aí irá gerar um erro, porque o container írá executar o "npm start" na pasta do usuário.
+Para alterar a pasta em que o comando será executado acrescente o parâmetro "-w" conforme o exemplo 
+a seguir:
+"docker run -d -p 8080:3000 -v "C:\Users\Alura\Desktop\volume-exemplo:/var/www" -w "/var/www" node npm start"
+
+- Podemos melhor esse comando ainda, passando o comando "pwd" ao invés do caminho da pasta. Exemplo:
+"docker run -d -p 8080:3000 -v "$(pwd):/var/www" -w "/var/www" node npm start"
+
+Aula 4
+
+- Use um Dockerfile para criar imagens
+
+- A seguir há um exemplo de Dockerfile
+"
+FROM node:latest
+MAINTAINER Douglas Quintanilha
+ENV PORT=3000
+COPY . /var/www
+WORKDIR /var/www
+RUN npm install
+ENTRYPOINT npm start
+EXPOSE $PORT
+"
+
+    - O FROM é o nome da imagem de origem
+    - MAINTAINER não é obrigatório, ele serve para identificar o criador da imagem
+    - ENV serve para definir variáveis de ambiente, e permitir que ao executar o container possa ser
+    alterada.
+    - COPY é para copiar o conteúdo selecionado para dentro de alguma pasta do container
+    - WORKDIR é para definir a pasta onde serão executados os comandos próximos comandos, 
+    pasta de trabalho
+    - RUN serve para chamar algum comando durante a construção da imagem
+    - ENTRYPOINT define um comando que será iniciado na criação do container
+    - EXPOSE expõe portas do container para o Docker host
+
+- Para criarmos uma imagem basta executar o comando "docker build". Exemplo:
+"docker build -f Dockerfile -t douglasq/node ."
+
+    - O parâmetro "-f" é para informar o nome do arquivo, ele só é obrigatório caso o nome do arquivo
+    seja diferente de Dockerfile
+    - O parâmetro "-t" é para darmos um nome para a imagem
+    - O parâmetro "." é para usar o diretório atual como base para criação da imagem
+
+- Para criarmos um container a partir dessa imagem basta executar o comando de exemplo:
+"docker run -d -p 8080:3000 douglasq/node"
+
+- Para enviarmos nossa imagem para o dockerhub basta criar uma conta, depois executar o comando
+"docker login" e informar as credenciais da conta, depois só executar o comando de exemplo 
+"docker push douglasq/node"
+
+Aula 5
+
+- use comando "hostname -i" dentro do container para descobrir o ip dele
+- ao criar dois containers podemos tentar fazer o ping de um para o outro. Conseguimos isso 
+passando o ip que obtemos anteriormente, mas ao tentar fazer o ping pelo nome do container
+recebemos um erro dizendo que a máquina não foi encontrada. Isso acontece porque os containers 
+estão na rede bridge (default) e ela não permite a comunicação direta pelo nome do host, para 
+resolver isso basta criar nossa própria rede com o comando:
+"docker network create --driver bridge minha-rede"
+
+    - O parâmetro "--driver" é para difinir o driver utilizado
+	- O parâmetro "minha-rede" é o próprio nome da rede
+	
+- Podemos usar o comando "docker network ls" para visualizarmos as redes criadas
+- Para executarmos um container dentro da rede criada basta usarmos o comando de exemplo a seguir:
+"docker run -it --name segundo-ubuntu --network minha-rede ubuntu"
+    - Basta passar o nome da rede no parâmetro --network
+
+- Podemos inspecionar nossa rede com o comando "docker inspect" também, "docker inspect minha-rede".
+Isso permitirá sabermos quais containers estão rodando nessa rede
+
+- A seguir temos um exemplo de um container com uma aplicação em node que se conecta a um outro 
+container com um banco mongo.
+    - Para rodar o exemplo basta baixar as duas imagens com os comandos:
+	"
+	docker pull douglasq/alura-books:cap05
+	docker pull mongo
+	"
+	- Executar elas:
+	"
+	docker run --network minha-rede -d -p 8080:3000 douglasq/alura-books:cap05
+	docker run -d --name meu-mongo --network minha-rede mongo
+	"
+	- Depois chamar a aplicação pela URL http://localhost:8080/, na primeira chamada não terá
+	nenhum livro, para isso chame a URL http://localhost:8080/seed para carregar o banco e 
+	depois o "/" para mostar os livros
+	- No arquivo "alura-docker-cap05.zip" tem o código fonte e Dockerfile para geração das imagens
+
+Aula 6
+
+- Exemplo de docker-compose.yml
+
+"
+version: '3'
+services:
+    nginx:
+        build:
+            dockerfile: ./docker/nginx.dockerfile
+            context: .
+        image: douglasq/nginx
+        container_name: nginx
+        ports:
+            - "80:80"
+        networks: 
+            - production-network
+        depends_on: 
+            - "node1"
+            - "node2"
+            - "node3"
+
+    mongodb:
+        image: mongo
+        networks: 
+            - production-network
+
+    node1:
+        build:
+            dockerfile: ./docker/alura-books.dockerfile
+            context: .
+        image: douglasq/alura-books
+        container_name: alura-books-1
+        ports:
+            - "3000"
+        networks: 
+            - production-network
+        depends_on:
+            - "mongodb"
+
+    node2:
+        build:
+            dockerfile: ./docker/alura-books.dockerfile
+            context: .
+        image: douglasq/alura-books
+        container_name: alura-books-2
+        ports:
+            - "3000"
+        networks: 
+            - production-network
+        depends_on:
+            - "mongodb"
+
+    node3:
+        build:
+            dockerfile: ./docker/alura-books.dockerfile
+            context: .
+        image: douglasq/alura-books
+        container_name: alura-books-3
+        ports:
+            - "3000"
+        networks: 
+            - production-network
+        depends_on:
+            - "mongodb"
+
+networks: 
+    production-network:
+        driver: bridge
+"
+
+- O "build" serve para dizer que o serviço será criado a partir dessa imagem a contruir
+- O "depends_on" serve para dizer que um serviço depende de um outro, então ele só inicializado
+após a inicialização deles.
+
+- Para testarmos o docker-compose basta descompactar o arquivo "alura-docker-cap06.zip" e criar
+um arquivo "docker-compose.yml" dentro da pasta descompactada.
+    - Execute o comando "docker-compose build" para construir as imagens
+	- Execute o comando "docker-compose up -d" para subir os containers, o parâmetro "-d" é
+	para não travar o terminal
+	- Execute o comando "docker-compose logs" para ver os logs dos serviços
+	- Execute o comando "docker-compose stop" para parar todos os containers
+	- Execute o comando "docker-compose down" para parar e remover todos os containers criados
+- Ainda podemos fazer com que um container se comunique com o outro, e podemos fazer pelo nome
+do serviço ou pelo nome do container, exemplo: "docker exec -it alura-books-1 ping node2"

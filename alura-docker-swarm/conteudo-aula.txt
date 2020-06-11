@@ -1,0 +1,112 @@
+Aula 1
+
+- https://labs.play-with-docker.com/, para usar docker direto pelo navegador. Ele cria uma
+seção de 4 horas para fazer testes.
+
+- comando "docker container run -it ubuntu:16.04"
+- para sair do container ctrl + q + p
+- docker image ls
+- docker inspect b94 (não precisa ser o ID todo)
+- docker history ubuntu:16.04, para listar as camadas da imagem
+- docker container ls -a, para listar todos os containers 
+- docker machine para criar diversar máquinas virtuais, dentro do nosso cluster (swarm)
+
+- docker-machine create -d virtualbox vm1
+    - or docker-machine create -d hyperv vm1 (você terá que fazer umas configurações sugeridas
+	nesse link https://docs.docker.com/machine/drivers/hyper-v/)
+    - "-d" para indicar o driver
+	- "vm1" nome da virtual machine
+- docker-machine ls -> para listar as docker machines
+- docker-machine start vm1 -> para iniciar a docker machine
+- docker-machine ssh vm1 -> para entrar na docker machine
+- docker swarm init -> iniciar o swarm (dentro da vm1)
+- docker swarm init --advertise-addr [o ip da máquina] (caso haja conflito de ips)
+- docker info -> para ver se o swarm está ativo
+
+Aula 2
+
+- criar duas novas máquinas
+    - docker-machine create -d hyperv vm2
+    - docker-machine create -d hyperv vm3
+- depois acessar as vms criadas para fazer elas pertencer a rede da vm1 e executar o comando
+    - docker swarm join --token [token] [ip]
+	    - essa informação é obtiva na criação da vm1, ou então através do comando
+		"docker swarm join-token worker", lembrando que deve estar dentro da vm1
+		
+- docker node ls -> para listar cada máquina que faz parte do swarm (deve ser executado dentro do vm1)
+- docker node rm [id do nó] -> para remover um nó
+    - mas para conseguir remover o nó é necessário parar ele com o comando:
+	"docker swarm leave" de dentro do nó que queremos apagar
+- dentro dos workers podemos subir containers, só que eles não serão enxergado nos demais nós
+    - docker container run -p 8080:3000 -d aluracursos/barbearia
+- docker node inspect vm2 -> a partir do manager vm1, com isso conseguimos pegar o ip do nó
+- docker service create -p 8080:3000 aluracursos/barbearia -> para criar um serviço, 
+todos os nós saberão da existência desse serviço
+- docker service ls -> para listar os serviços
+- docker service ps [id do serviço] -> para mostrar onde a tarefa (serviço) está rodando
+- routing mesh é tipo um load balancer, ele que está rodando alguma aplicação na porta 8080
+e redireciona a requisição para o nó que tem a aplicação rodando, mesmo que você chame pelo o
+ip de outro nó
+
+Aula 3
+
+- Como fazer backup do Swarm, da maneira correto porque não foi feito aula dois
+    - removeu todos as machines do swarm
+	- "docker swarm init" na vm1
+	- adicionar os workers com o comando "docker swarm join --token [token]
+	- criar o serviço novamente com o comando:
+	"docker service create -p 8080:3000 aluracursos/barbearia
+	- para fazer o backup basta copiar o conteúdo da pasta /var/lib/docker/swarm, para acessá-la
+	é necessário fazer o sudo su
+	    - cp -r /var/lib/docker/swarm/ backup
+		- para simular um evento ruim vamos remover os  dois workers vm2 e vm3 com o comando
+		"docker node rm vm2 --force" e "docker node rm vm3 --force". Depois tiramos a vm1 do swarm
+		com o comando "docker swarm leave --force"
+		- ao olharmos a pasta /var/lib/docker/swarm veremos que a pasta está limpa, mas podemos
+		copiar o conteúdo do backup para ela com o comando "cp -r backup/* /var/lib/docker/swarm"
+		e iniciar o swarm novamente mas dessa ver com o parâmetro "--force-new-cluster", exemplo:
+		"docker swarm init --force-new-cluster". Com isso ele já subir todos os workers excluídos
+		e todos eles dentro do swarm
+- Para adicionar um novo manage	basta executar o comando docker swarm join-token manager, ele 
+dará o comando para executar dentro do worker que irá virar manager. Agora quando executarmos
+o comando docker node ls ficarão com o estado de Reachable, e se o Leader sair do swarm poderão 
+ser candidatas a ser tornarem Leader.
+- É usado o algoritmo de RAFT para chegar no consenso de quem se tornará o novo manager
+
+Aula 4
+
+- para dizermos que um manager não pode rodar uma tarefa temos que executar nele o comando
+"docker node update --availability drain vm1", e ele já estava com uma tarefa ela será passada
+para algum outro nó que não esteja drain (essa é a primeira possibilidade)
+    - para voltar ele para o estado anterior basta executar o comando
+    "docker node update --availability active vm1"
+- Outra forma de dizermos que só workers podem rodar tarefa é executando o seguinte comando:
+"docker service update --constraint-add node.role==worker [id servico]"
+
+Aula 5
+
+- para adicionar mais replicas basta executar o comando
+"docker service update --replicas 4 [id serviço]" agora as requisições não serão direcionadas
+sempre para o mesmo container, ela poderá cair em qualquer um que tenha a tarefa
+- ficar adicionando várias replicas só para criação da tarefa em cada um dos nós não é a
+melhor forma. Podemos criar o serviço no modo global, então a tarefa será criada em cada 
+container do swarm, exemplo: "docker service create -p 8080:3000 --mode global aluracursos/barbearia"
+
+Aula 6
+
+- Para inspect formatado e melhor apresentado executar o comando:
+"docker node inspect vm1 --pretty"
+- O nós de dentro de um swarm consegue se comunicar entre eles facilmente, já que todos estão 
+dentro da rede overlay com driver swarm, usar o comando "docker network ls" para listar as redes.
+- agora vamos fazer um teste com os container dentro de um swarm tentando se conectar via nome.
+Para isso vamos criar um novo serviço, "docker service create --name servico --replicas 2 alpine sleep 1d".
+Vamos usar o comando docker container ls para pegar o nome do container que queremos fazer o ping.
+Agora vamos entrar no container da primeira máquina e tentar um ping com o nome que pegamos.
+Note que recebemos um bad address mesmo conseguindo realizar o mesmo procedimento pelo ip.
+- agora como fazer service discovery? Assim como resolvemos no docker normal criando uma nova rede
+bridge e fazendo nossos containers utilizarem ela podemos fazer com o swarm também. Só que agora
+utilizando o driver overlay.
+    - "docker network create -d overlay my_overlay"
+    - agora vamos criar um serviço que irá utilizar a rede myoverley
+	"docker service create --name servico --network my_overlay --replicas 2 alpine sleep 1d"
+	- agora se tentar fazer o ping de um container no outro pelo ip irá funcionar

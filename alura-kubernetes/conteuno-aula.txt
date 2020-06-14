@@ -1,0 +1,327 @@
+Aula 1
+
+- O conteúdo das aulas estão no github 
+https://github.com/alura-cursos/curso-kubernetes
+- Descompacte o arquivo curso-kubernetes-master.zip
+- entre na pasta mysql e execute "docker-compose up -d"
+- entre no containter ("docker exec -t banco_mysql bash") e vá para 
+a pasta "/home" pois já tem um volume mapeado, nesse volume há um sh 
+para fazer a carrega dos scripts de inicialização.
+- vamos voltar o a pasta raiz do curso e entrar na pasta noticias e
+executar "docker-compose up -d" e depois na sistema e executar 
+"docker-compose up -d" novamente
+- agora vamos baixar o kubectl e o minikube, para isso entre no site
+https://kubernetes.io/ vá em Documentation e depois em Tasks. No menu de
+tasks tem o item Install Tools com os subitens para instalar as duas
+ferramentas, é só seguir o tutorial.
+- Comandos do minikube
+    - Para iniciar o Minikube: "minikube start"
+	- Para iniciar o Minikube com uma versão especifica do Kubernetes:
+	"minikube start --kubernetes-version="v1.16""
+	- Para acessar o dashboard do Kubernetes em execução:
+	"minikube dashboard"
+	- Para ver o status do Minikube:
+	"minikube status"
+	- Para parar o cluster:
+	"minikube stop"
+	- Para se conectar pelo SSH com o nó master do cluster:
+	"minikube ssh"
+	- E para remover o cluster:
+	"minikube delete"
+	E para remover todos os clusters e perfis:
+	- "minikube delete --all"
+- Agora vamos criar o aplicacao.yml com o seguinte conteúdo dentro da
+pasta kubernetes:
+"
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aplicacao-noticia
+spec:
+  containers:
+    - name: container-aplicacao
+      image: jnlucas/image-phpmysql:latest
+      ports:
+        - containerPort: 80
+"
+- Depois de criado devemos movê-lo para dentro do cluster com o comando
+"kubectl create -f aplicacao.yml"
+- Eu tive problema para rodar o kubernetes com o hyper-v então desabilitei
+ele com o comando "bcdedit /set hypervisorlaunchtype off" para conseguir
+rodar ele usando o virtualbox com o comando 
+"minikube start --driver virtualbox"
+- para verificar se foi executado com sucesso basta executar o comando 
+"kubectl get pods" e no pod irá aparecer na lista
+- para obter a descrição dos pods basta executar o comando
+"kubectl get pods" ou "kubectl get pods [nome do pod]"
+
+Aula 2
+
+- No kubernetes temos os elementos master, nodes(minion) e pods
+    - master é o cluster
+	- node é um worker
+	- pods é uma coleção de containers que rodam num host
+- Alguns comandos do kubectl
+    - "kubectl get nodes" -> listar os nodes do seu cluster
+	- "kubectl explain node" -> obter explicação de um tipo de recurso
+	- "kubectl get pods -o wide" -> "-o wide" para receber mais infos
+	- "kubectl logs [nome-pod-name]" -> ver logs de um pod
+- Agora vamos criar o arquivo "deployment-aplicacao.yml" dentro da 
+pasta kubernetes:
+"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aplicacao-noticia-deployment
+spec:
+  selector:
+    matchLabels:
+      name: aplicacao-noticia-pod
+  template:
+    metadata:
+      labels:
+        name: aplicacao-noticia-pod
+    spec:
+      containers:
+      - name: container-aplicacao
+        image: jnlucas/image-phpmysql:latest
+        ports:
+          - containerPort: 80
+"
+- Depois de criado devemos movê-lo para dentro do cluster com o comando
+"kubectl create -f deployment-aplicacao.yml"
+- para verificar se foi executado com sucesso basta executar o comando 
+"kubectl get pods" e ele irá aparecer na lista or pelo "minikube bashboard"
+- nós temos dois pods, um gerenciado pelo deployment e outro não.
+Vamos excluir os dois pods, "kubectl get pods" para obter o nome dos pods
+e depois execute kubectl delete pods [nome pod] para cada um. Ao executar
+"kubectl get pods" novamente veremos que apenas um dos pods foi recriado,
+aquele gerenciado pelo deployment.
+- Vamos obter o ip do pod pelo comando "kubectl describe pods [nome pod]"
+- Agora vamos criar o arquivo "servico-aplicacao-noticia.yml" dentro
+da pasta kubernetes, ele será nosso load balance.
+"
+apiVersion: v1
+kind: Service
+metadata:
+  name: servico-aplicacao-noticia
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    name: aplicacao-noticia-pod
+"
+- Depois de criado vamos jogar ele dentro do nosso cluster com o comando 
+"kubectl create -f servico-aplicacao-noticia.yml"
+- Para obter o endereço do serviço execute o comando
+"minikube service [nome do serviço] --url"
+- Ao tentar acessar a URL veremos um erro, isso porque não há nenhum
+arquivo dentro do container do pod ainda.
+- Para acessá-lo é bem semelhante como fazemos para acessar um container
+docker, basta executar o comando "kubectl exec -it [nome pod] bash"
+- Vamos criar um arquivo index.html com qualquer conteúdo dentro da pasta
+"/var/www/html", ao acessar a URL novamente veremos o conteúdo do arquivo
+index.html criado.
+- Agora vamos subir novamente o serviço só que usando a imagem da aplicação.
+Para isso vamos criar um Dockerfile que terá como base a imagem 
+"jnlucas/image-phpmysql:latest" e copiar o conteúdo a aplicação.
+
+"
+FROM jnlucas/image-phpmysql:latest
+COPY noticias /var/www/html
+"
+
+- Para facilitar vamos pegar a imagem gerada pelo o instrutor 
+("jnlucas/noticia-alura:v1") e usá-la no arquivo "deployment-aplicacao.yml"
+- Próximo passo é excluir o deployment e service que subirmos anteriormente
+e subi-los com os arquivos atualizados. 
+"
+kubectl delete -f [nome dos arquivos]
+kubectl create -f [nome dos arquivos]
+"
+- E depois executar o comando "minikube service [nome do serviço] --url" e 
+acessar a URL novamente
+
+Aula 3
+
+- Agora vamos escalar o projeto sistema
+- Criar uma cópia do arquivo "deployment-aplicacao.yml" para um arquio 
+"deployment-sistema.yml", e alterar onde houver "noticia" por "sistema",
+e alterar a imagem de v1 para v2.
+- Fazer o mesmo para "servico-aplicacao-noticia.yml"
+- Agora vamos subir os novos arquivos para o cluster
+- O portal de notícias ainda está apontando para o endereço errado, então
+vamos atualizar a versão da imagem dele para v3 e subir novamente
+- Quando adicionamos mais de um pods não está havendo compartilhamento de
+seção e imagens entre os pods, para resolver isso vamos criar um statefulset
+e volumes.
+    - Primeiro vamos criar um arquivo "statefulset-sistema.yml" com o conteúdo
+	"
+	apiVersion: apps/v1
+	kind: StatefulSet
+	metadata:
+	  name: aplicacao-sistema-statefulset
+	spec:
+	  serviceName: aplicacao-sistema-statefulset
+	  selector:
+		matchLabels:
+		  name: aplicacao-sistema-statefulset
+	  template:
+		metadata:
+		  labels:
+			name: aplicacao-sistema-statefulset
+		spec:
+		  containers:
+			- name: container-aplicacao-sistema-statefulset
+			  image: jnlucas/noticia-alura:v2
+			  ports:
+				- containerPort: 80
+			  volumeMounts:
+				- name: imagens
+				  mountPath: /var/www/html/uploads
+				- name: sessoes
+				  mountPath: /tmp
+		  volumes:
+			- name: imagens
+			  persistentVolumeClaim:
+				claimName: permissao-imagens
+			- name: sessoes
+			  persistentVolumeClaim:
+				claimName: permissao-sessao
+	"
+	- Agora vamos as permissões para imagens e seção, crie os arquivos
+	"permissao-imagens.yml" e "permissao-sessao.yml"
+	
+	"
+	apiVersion: v1
+	kind: PersistentVolumeClaim
+	metadata:
+	  name: permissao-imagens
+	spec:
+	  accessModes:
+		- ReadWriteMany
+	  resources:
+		requests:
+		  storage: 1Gi
+    "
+	
+	- O "permissao-sessao.yml" terá o mesmo conteúdo, a única diferença
+	é que o name será "permissao-sessao"
+	
+	- Depois disso vamos enviar cada um dos arquivos para o cluster, 
+	começando pelos de permissão e depois o "statefulset-sistema.yml"
+	
+	- Nós temos que criar um load balance para ele também, então vamos
+	criar o arquivo "servico-statefulset.yml" e adicionar o seguinte 
+	conteúdo nele.
+	
+	"
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  name: servico-aplicacao-sistema-statefulset
+	spec:
+	  type: LoadBalancer
+	  ports:
+		- name: http
+		  port: 80
+	  selector:
+		name: aplicacao-sistema-pod-statefulset
+	"
+	
+	- Agora só falta enviar ele para o cluster e depois obter a url dele
+	para fazer o teste
+	
+Aula 4
+
+- Agora queremos monitorar criação de novos pods, com isso faremos uso do
+slack.
+- Primeiro, na tela inicial do slack vamos em apps, browse app e então
+selecionamos o botão build do lado da foto do nosso usuário.
+- Depois selecionamos o botão start building, e escolhemos um nome e o 
+workspace ao qual o novo app ficará vinculado.
+- Vamos criar um "Incoming Webhooks", selecione a opção e ative ela.
+- Após isso, adiciona um novo webhook no workspace e selecione o channel.
+- Agora vamos adicionar um shell script que irá disparar esse webhook.
+Crie o arquivo "enviarMensagens.sh" dentro da pasta sistema e adicione o 
+conteúdo do webhook nele.
+
+"
+#!/bin/bash
+
+curl -X POST \
+  -H 'Content-type: alication/json' \
+  --data '{\
+    "text": "Olá, um novo pod acabou de ser criado!"\
+    }' \
+[link webhook]
+"
+
+- Depois de criado temos que construir a imagem novamente
+"
+docker build -t minha-imagem
+docker tag minha-imagem:v4 jnlucas/noticia-alura:v4
+docker push jnlucas/noticia-alura:v4
+"
+
+- Vamos atualizar nosso arquivo "statefulset-sistema.yml" para que a cada
+criação de pod o webhook seja disparado um alerta no slack. Para isso, vamos
+alterar o arquivo e adicionar o seguinte trecho abaixo do containterPort com
+o mesmo nível de ports.
+
+"
+lifecycle:
+  postStart:
+    exec:
+	  command: ["sh","enviarMensagens.sh"]
+"
+
+- Depois basta atualizarmos os arquivos
+
+"
+kubectl delete -f statefulset-sistema.yml
+kubectl delete -f servico-statefulset.yml
+
+kubectl create -f statefulset-sistema.yml
+kubectl create -f servico-statefulset.yml
+
+minikube service servico-aplicacao-sistema --url
+"
+
+- Também temos a opção de editar os arquivos de forma online com o comando
+"kubectl edit deployment aplicacao-noticia-deployment"
+
+Aula 5
+
+- Vamos configurar o autoscaler no kubernetes
+- No arquivo "deployment-aplicacao-yml" vamos definir a capacidade de 
+processamento dos pods. Vamos adicionar o seguinte conteúdo abaixo da 
+definição de portas e no mesmo nível.
+
+"
+resources:
+  requests:
+    cpu: 100m
+"
+
+- Feito isso, vamos adicionar a métrica no kubernetes para parametrizar 
+quando deve ser realizado o autoscaler.
+
+"
+kubectl autoscale deployment aplicacao-noticia-deployment  \
+--cpu-percent=5 --min=1 --max=10
+"
+
+- "kubectl get hpa aplicacao-noticia-deployment" para obter as métricas.
+
+- "minikube addons list" para obter os addons habilitados, isso serve para
+sabermos se as métricas estão habilitadas.
+
+- "minikube addons enable metrics-server" para habilitar
+- "minikube addons enable heapster"
+- "minikube addons enable logviewer"
+
+- "kubectl delete hpa aplicacao-noticia-deployment" para remover uma métrica
+

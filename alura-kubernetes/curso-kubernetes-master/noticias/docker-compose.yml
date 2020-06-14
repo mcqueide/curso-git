@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  sistema_web:
+    container_name: container-kube-noticias
+    image: jnlucas/image-phpmysql:latest
+    volumes:
+      - ./:/var/www/html
+
+    working_dir: /var/www/html/
+    ports:
+      - "8588:80"
+    networks:
+      - mysql_default
+networks:
+  mysql_default:
+    driver: bridge
